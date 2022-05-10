@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Library.BusinessLogicLayer\Library.BusinessLogicLayer.csproj" />
+    <ProjectReference Include="..\Library.Common\Library.Common.csproj" />
+    <ProjectReference Include="..\Library.DataAccessLayer\Library.DataAccessLayer.csproj" />
+  </ItemGroup>
+
+</Project>
