@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Library.Common\Library.Common.csproj" />
     <ProjectReference Include="..\Library.DataAccessLayer\Library.DataAccessLayer.csproj" />
     <ProjectReference Include="..\Library.DataModels\Library.DataModels.csproj" />

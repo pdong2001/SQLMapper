@@ -22,17 +22,13 @@ namespace Library.BusinessLogicLayer.Products
         {
             var t = Task<Product>.Run(() =>
             {
-                if (entity.Id == Guid.Empty)
-                {
-                    entity.Id = Guid.NewGuid();
-                }
                 return _context.Products.Create(entity);
             });
             await t;
             return t.Result;
         }
 
-        public async Task<bool> Delete(Guid id)
+        public async Task<bool> Delete(long id)
         {
             var t = Task<bool>.Run(() =>
             {
@@ -42,7 +38,7 @@ namespace Library.BusinessLogicLayer.Products
             return t.Result;
         }
 
-        public async Task<Product> Find(Guid id)
+        public async Task<Product> Find(long id)
         {
             var t = Task<Product>.Run(() =>
             {
@@ -72,7 +68,7 @@ namespace Library.BusinessLogicLayer.Products
             return t.Result;
         }
 
-        public async Task<bool> Update(Guid id, Product entity)
+        public async Task<bool> Update(long id, Product entity)
         {
             var t = Task<bool>.Run(() =>
             {

@@ -3,6 +3,7 @@ using Library.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace Library.Common
 {
@@ -31,6 +32,41 @@ namespace Library.Common
             }
         }
 
+        public void CreateTableIfNotExists()
+        {
+            var cmd = _connection.CreateCommand();
+            cmd.CommandText = $"SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = @tableName AND TABLE_SCHEMA = 'dbo'";
+            cmd.Parameters.AddWithValue("@tableName", TableName);
+            var isNotExists = (int)cmd.ExecuteScalar() == 0;
+            cmd.Dispose();
+            if (isNotExists)
+            {
+                Console.WriteLine($"Creating table {TableName}");
+                var properties = entityType.GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly | System.Reflection.BindingFlags.Public);
+                var columnDefine = "";
+                cmd = _connection.CreateCommand();
+                if (entityType.GetInterface(nameof(HasKey)) != null)
+                {
+                    var idType = entityType.GetProperty("Id").PropertyType;
+                    var itemTypeName = idType.GetSQLTypeName();
+                    columnDefine += $"id {itemTypeName} PRIMARY KEY {(itemTypeName == "INT" || itemTypeName == "BIGINT" ? "IDENTITY" : "")},";
+                }
+                if (entityType.GetInterface(nameof(IAuditedEntity)) != null)
+                {
+                    columnDefine += $"{nameof(IAuditedEntity.Created_At)} DATETIME2 NOT NULL,";
+                    columnDefine += $"{nameof(IAuditedEntity.Updated_At)} DATETIME2 NULL,";
+                }
+                foreach (var item in properties)
+                {
+                    var propertyType = item.PropertyType;
+                    columnDefine += $"{item.Name} {propertyType.GetSQLTypeName()} ,";
+                }
+                cmd.CommandText = $"CREATE TABLE [dbo].[{TableName}] ({columnDefine})";
+                cmd.ExecuteNonQuery();
+                Console.WriteLine($"Create table {TableName} completed");
+            }
+        }
+
         protected readonly string _tableName = "";
 
         protected virtual string TableName => _tableName;
@@ -42,19 +78,17 @@ namespace Library.Common
             var pros = entityType.GetProperties();
             var parameters = new List<SqlParameter>(pros.Length);
             var cmdIdentity = _connection.CreateCommand();
-            cmdIdentity.CommandText = $"DECLARE @next_id int = IDENT_CURRENT('dbo.[{TableName}]') + IDENT_INCR('dbo.[{TableName}]');" +
-                "SELECT @next_id";
-            var id = cmdIdentity.ExecuteScalar();
-            var check = id.ToString();
-            if (!string.IsNullOrWhiteSpace(check))
+            var idType = typeof(T).GetProperty("Id").GetType();
+            if (idType == typeof(long) || idType == typeof(int))
             {
-                entityType.GetProperty("Id").SetValue(entity, id);
+                pros = pros.Where(pro => pro.Name.ToLower() != "id").ToArray();
             }
             var columns = "";
             var parameterNames = "";
             if (entityType.GetInterface(nameof(IAuditedEntity)) != null)
             {
                 entityType.GetMethod(nameof(IAuditedEntity.CreateTime)).Invoke(entity, null);
+                pros = pros.Where(pro => pro.Name.ToLower() != "id").ToArray();
             }
             foreach (var prop in pros)
             {
@@ -68,10 +102,12 @@ namespace Library.Common
             }
             columns = columns.Trim(',', ' ');
             parameterNames = parameterNames.Trim(',', ' ');
-            cmd.CommandText = $"INSERT INTO [dbo].[{TableName}] ({columns}) VALUES ({parameterNames}) SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY]";
+            cmd.CommandText = $"INSERT INTO [dbo].[{TableName}] ({columns}) VALUES ({parameterNames}) SELECT IDENT_CURRENT('{TableName}')";
             cmd.Parameters.AddRange(parameters.ToArray());
-            if (cmd.ExecuteNonQuery() > 0)
+            var id = cmd.ExecuteScalar();
+            if (!string.IsNullOrEmpty(id.ToString()))
             {
+                entityType.GetProperty("Id").SetValue(entity, long.Parse(id.ToString()));
                 return entity;
             }
             return default(T);
@@ -84,7 +120,6 @@ namespace Library.Common
             cmd.CommandText = $"DELETE [dbo].[{TableName}] WHERE id = @id";
             cmd.Parameters.AddWithValue("@id", id);
             return cmd.ExecuteNonQuery() > 0;
-
         }
 
         public virtual T Find(object id)
@@ -104,6 +139,7 @@ namespace Library.Common
                     }
                     catch { }
                 }
+            reader.Close();
             return obj;
         }
 
@@ -169,7 +205,7 @@ namespace Library.Common
             {
                 entityType.GetMethod(nameof(IAuditedEntity.UpdateTime)).Invoke(entity, null);
             }
-            foreach (var prop in pros)
+            foreach (var prop in pros.Where(p => p.Name != nameof(IAuditedEntity.Created_At)))
             {
                 var value = prop.GetValue(entity);
                 if (prop.Name.ToLower() != "id" && prop.Name.ToLower() != "createdat" && prop.Name.ToLower() != "createdby")
@@ -191,7 +227,7 @@ namespace Library.Common
             return cmd.ExecuteNonQuery() > 0;
         }
 
-        public virtual IList<T> GetList(int? Count)
+        public virtual IList<T> GetList(int? Count = null, params DbQueryParameter[] dbQueryParameters)
         {
             var cmd = _connection.CreateCommand();
             var top = "";
@@ -199,7 +235,24 @@ namespace Library.Common
             {
                 top = "TOP " + Count;
             }
-            cmd.CommandText = $"SELECT {top} * FROM [dbo].[{TableName}]";
+            var whereBy = "";
+            if (dbQueryParameters.Length > 0) whereBy = "WHERE ";
+            for (int i = 0; i < dbQueryParameters.Length; i++)
+            {
+                var parameter = dbQueryParameters[i];
+                whereBy += $"{parameter.Name} {parameter.GetCompareOperator()} @{parameter.Name + i} ";
+                if (i < dbQueryParameters.Length - 1)
+                {
+                    whereBy += $"{parameter.GetLogicOperator()} ";
+                }
+                try
+                {
+                    cmd.Parameters.AddWithValue("@" + parameter.Name + i, parameter.Value);
+                }
+                catch
+                { }
+            }
+            cmd.CommandText = $"SELECT {top} * FROM [dbo].[{TableName}] " + whereBy;
             var reader = cmd.ExecuteReader();
             var result = new List<T>();
             while (reader.Read())

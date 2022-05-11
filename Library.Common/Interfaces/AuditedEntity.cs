@@ -10,20 +10,24 @@ namespace Library.Common.Interfaces
     {
         void CreateTime();
         void UpdateTime();
+        public DateTime Created_At { get; set; }
+        public DateTime? Updated_At { get; set; }
     }
+
+
     public abstract class AuditedEntity<TKey> : Entity<TKey>, IAuditedEntity, HasKey<TKey>, HasKey where TKey : struct
     {
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime Created_At { get; set; }
+        public DateTime? Updated_At { get; set; }
 
         public void CreateTime()
         {
-            this.CreatedAt = DateTime.Now;
+            this.Created_At = DateTime.Now;
         }
 
         public void UpdateTime()
         {
-            this.UpdatedAt = DateTime.Now;
+            this.Updated_At = DateTime.Now;
         }
     }
 }

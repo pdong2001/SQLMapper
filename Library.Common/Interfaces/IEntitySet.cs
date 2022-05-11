@@ -18,6 +18,7 @@ namespace Library.Common.Interfaces
         T Create(T entity);
         bool Delete(object id);
         bool Update(object id, T entity);
-        IList<T> GetList(int? Count);
+        IList<T> GetList(int? Count = null, params DbQueryParameter[] dbQueryParameters);
+        void CreateTableIfNotExists();
     }
 }

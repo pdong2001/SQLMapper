@@ -1,4 +1,5 @@
-﻿using Library.BusinessLogicLayer.Products;
+﻿using Library.BusinessLogicLayer.Categories;
+using Library.BusinessLogicLayer.Products;
 using Library.Common.Interfaces;
 using Library.DataAccessLayer;
 using Microsoft.AspNetCore.Builder;
@@ -10,9 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace WebAPI
@@ -29,11 +32,16 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = new LowerCaseNamingPolicy();
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
-                { Title = "WebAPI", Version = "v1",
+                {
+                    Title = "WebAPI",
+                    Version = "v1",
                     Contact = new OpenApiContact
                     {
                         Email = @"phamphuongdong2001@gmail.com",
@@ -53,8 +61,9 @@ namespace WebAPI
             {
                 return new DatabaseContext(Configuration.GetConnectionString("Default"));
             });
-
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,6 +86,11 @@ namespace WebAPI
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public class LowerCaseNamingPolicy : JsonNamingPolicy
+        {
+            public override string ConvertName(string name) => name.ToLower();
         }
     }
 }
