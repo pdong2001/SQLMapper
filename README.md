@@ -3,12 +3,12 @@
 Project mẫu sử dụng thư viện ADO .NET để tương tác với MSSQL mà không cần sử dụng Entity framework hay viết câu lệnh SQL
 
 ## Bắt đầu
-Bước 1. Tạo một Database trống (Nếu chưa có)
-Bước 2. Copy connetion string của database vừa tạo vào trong appsettings.json của Project Migrate và Project WebAPI.
+* Bước 1. Tạo một Database trống (Nếu chưa có)
+* Bước 2. Copy connetion string của database vừa tạo vào trong appsettings.json của Project Migrate và Project WebAPI.
 ![image](https://user-images.githubusercontent.com/79776591/167767278-12877bd4-47ef-4cad-8f36-4b8d0d6c693b.png)
-Bước 3. Chạy project Migrate để tạo Database.
+* Bước 3. Chạy project Migrate để tạo Database.
 ![image](https://user-images.githubusercontent.com/79776591/167767600-2c9485cf-e46a-463e-a2c3-c2d811c3252b.png)
-Bước 4. Chạy WebAPI.
+* Bước 4. Chạy WebAPI.
 
 ## Chạy thử
 
