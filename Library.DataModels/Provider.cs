@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace Library.DataModels
 {
-    [TableName("Categories")]
-    public class Category : AuditedEntity<long>
+    [TableName("Providers")]
+    public class Provider : AuditedEntity<long>
     {
         public string Name { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
         public bool Visible { get; set; }
     }
 }

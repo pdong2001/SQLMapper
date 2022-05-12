@@ -14,7 +14,5 @@ namespace Library.DataAccessLayer.EntitySets
         public CategorySet(SqlConnection connection) : base(connection)
         {
         }
-
-        protected override string TableName => "Categories";
     }
 }

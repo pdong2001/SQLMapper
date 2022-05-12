@@ -9,10 +9,11 @@ namespace Migrate
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
-            DatabaseContext databaseContext = new DatabaseContext(config.GetConnectionString("Default"));
+            WebShopDbHelper databaseContext = new WebShopDbHelper(config.GetConnectionString("Default"));
             databaseContext.CreateTablesIfNotExsist();
         }
     }

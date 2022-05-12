@@ -8,6 +8,7 @@ namespace Library.Common.Interfaces
 {
     public interface HasKey
     {
+        public static string TableName { get; }
         object GetKey();
     }
 

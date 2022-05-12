@@ -9,6 +9,7 @@ namespace Library.Common.Interfaces
     public interface IDatabaseHelper : IDisposable
     {
         void CreateTablesIfNotExsist();
+        void AddTableConstraints();
         void DropAllTable();
     }
 }

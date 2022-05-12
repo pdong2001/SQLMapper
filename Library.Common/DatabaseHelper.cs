@@ -18,7 +18,15 @@ namespace Library.Common
             {
                 set.SetValue(this, set.PropertyType.GetConstructors()[0].Invoke(new object[] { _connection }));
             }
-            CreateTablesIfNotExsist();
+        }
+
+        public void AddTableConstraints()
+        {
+            var sets = GetType().GetProperties().Where(t => t.PropertyType.GetInterface(nameof(IEntitySet)) != null);
+            foreach (var set in sets)
+            {
+                set.PropertyType.GetMethod(nameof(IEntitySet<object>.AddConstraints)).Invoke(set.GetValue(this), null);
+            }
         }
 
         public void CreateTablesIfNotExsist()
@@ -26,8 +34,9 @@ namespace Library.Common
             var sets = GetType().GetProperties().Where(t => t.PropertyType.GetInterface(typeof(IEntitySet).Name) != null);
             foreach (var set in sets)
             {
-                set.PropertyType.GetMethod("CreateTableIfNotExists").Invoke(set.GetValue(this),null);
+                set.PropertyType.GetMethod(nameof(IEntitySet<object>.CreateTableIfNotExists)).Invoke(set.GetValue(this),null);
             }
+            AddTableConstraints();
         }
 
         public void Dispose()
@@ -40,5 +49,6 @@ namespace Library.Common
         {
             throw new NotImplementedException();
         }
+
     }
 }

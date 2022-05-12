@@ -59,10 +59,10 @@ namespace WebAPI
 
             services.AddScoped(services =>
             {
-                return new DatabaseContext(Configuration.GetConnectionString("Default"));
+                return new WebShopDbHelper(Configuration.GetConnectionString("Default"));
             });
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
 

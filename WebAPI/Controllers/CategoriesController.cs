@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> GetPage([FromQuery] PagedAndSortedLookUpDto request)
+        public async Task<IActionResult> GetPage([FromQuery] PageRequestDto request)
         {
             try
             {

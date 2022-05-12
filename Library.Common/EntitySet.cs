@@ -1,4 +1,5 @@
-﻿using Library.Common.Dtos;
+﻿using Library.Common.Attributes;
+using Library.Common.Dtos;
 using Library.Common.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,16 +20,21 @@ namespace Library.Common
                 _connection.Open();
             }
             entityType = typeof(T);
-            if (string.IsNullOrWhiteSpace(TableName))
+            var table = (TableNameAttribute)Attribute.GetCustomAttribute(entityType, typeof(TableNameAttribute));
+            if (table == null)
             {
                 if (entityType.Name.EndsWith('y'))
                 {
-                    _tableName = entityType.Name.Substring(0, entityType.Name.Length - 1) + "es";
+                    TableName = entityType.Name.Substring(0, entityType.Name.Length - 1) + "es";
                 }
                 else
                 {
-                    _tableName = entityType.Name + "s";
+                    TableName = entityType.Name + "s";
                 }
+            }
+            else
+            {
+                TableName = table.TableName;
             }
         }
 
@@ -41,7 +47,7 @@ namespace Library.Common
             cmd.Dispose();
             if (isNotExists)
             {
-                Console.WriteLine($"Creating table {TableName}");
+                Console.WriteLine($"[{DateTime.Now}] Tạo bảng [db].[{TableName}]");
                 var properties = entityType.GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly | System.Reflection.BindingFlags.Public);
                 var columnDefine = "";
                 cmd = _connection.CreateCommand();
@@ -63,13 +69,11 @@ namespace Library.Common
                 }
                 cmd.CommandText = $"CREATE TABLE [dbo].[{TableName}] ({columnDefine})";
                 cmd.ExecuteNonQuery();
-                Console.WriteLine($"Create table {TableName} completed");
+                Console.WriteLine($"[{DateTime.Now}] Tạo bảng [dbo].[{TableName}] hoàn tất.");
             }
         }
 
-        protected readonly string _tableName = "";
-
-        protected virtual string TableName => _tableName;
+        protected readonly string TableName;
 
         public virtual T Create(T entity)
         {
@@ -143,7 +147,7 @@ namespace Library.Common
             return obj;
         }
 
-        public virtual PagedAndSortedResultDto<T> Pagination(PagedAndSortedLookUpDto request)
+        public virtual PagedAndSortedResultDto<T> Pagination(PageRequestDto request)
         {
             var cmd = _connection.CreateCommand();
             var cmdCount = _connection.CreateCommand();
@@ -270,6 +274,41 @@ namespace Library.Common
             }
             reader.Close();
             return result;
+        }
+
+        public void AddConstraints()
+        {
+            var properties = entityType.GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly | System.Reflection.BindingFlags.Public);
+            var cmd = _connection.CreateCommand();
+            Console.WriteLine($"[{DateTime.Now}] Tạo ràng buộc trên bảng [dbo].[{TableName}]");
+            foreach (var pro in properties)
+            {
+                var foreignKeyAttribute = pro.GetCustomAttributes(typeof(ForeignKeyAttribute), true).Cast<ForeignKeyAttribute>().FirstOrDefault();
+                if (foreignKeyAttribute != null)
+                {
+                    var foreignTableName = foreignKeyAttribute.GetTableName();
+                    Console.WriteLine($"[{DateTime.Now}] Tạo ràng buộc [FK_{TableName}_{foreignTableName}]");
+                    cmd.CommandText = $"ALTER TABLE [dbo].[{TableName}] " +
+                        $"ADD CONSTRAINT [FK_{TableName}_{foreignTableName}] FOREIGN KEY([{pro.Name}]) " +
+                        $"REFERENCES[dbo].[{foreignTableName}]([Id]) " +
+                        $"ON UPDATE NO ACTION ON DELETE {(pro.PropertyType.Name.Contains(nameof(Nullable)) ? "SET NULL" : "CASCADE")}";
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        Console.WriteLine($"[{DateTime.Now}] Tạo ràng buộc [FK_{TableName}_{foreignTableName}] hoàn tất.");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.WriteLine($"[{DateTime.Now}] Thêm ràng buộc thất bại [FK_{TableName}_{foreignTableName}]");
+                        Console.WriteLine($"[{DateTime.Now}] {ex.Message}");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                    }
+                }
+            }
         }
     }
 }

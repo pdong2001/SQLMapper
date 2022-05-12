@@ -15,8 +15,6 @@ namespace Library.DataAccessLayer.EntitySets
         {
         }
 
-        protected override string TableName => "Products";
-
         public override bool Delete(object id)
         {
             /*

@@ -13,10 +13,10 @@ namespace Library.BusinessLogicLayer.Categories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly DatabaseContext _context;
+        private readonly WebShopDbHelper _context;
         private readonly IMapper mapper;
 
-        public CategoryRepository(DatabaseContext context, IMapper mapper)
+        public CategoryRepository(WebShopDbHelper context, IMapper mapper)
         {
             _context = context;
             this.mapper = mapper;
@@ -76,7 +76,7 @@ namespace Library.BusinessLogicLayer.Categories
             return t.Result;
         }
 
-        public async Task<PagedAndSortedResultDto<Category>> Pagination(PagedAndSortedLookUpDto request)
+        public async Task<PagedAndSortedResultDto<Category>> Pagination(PageRequestDto request)
         {
             var t = Task<PagedAndSortedResultDto<Category>>.Run(() =>
             {

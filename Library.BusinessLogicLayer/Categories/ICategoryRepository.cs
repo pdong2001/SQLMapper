@@ -11,7 +11,7 @@ namespace Library.BusinessLogicLayer.Categories
     public interface ICategoryRepository
     {
         Task<Category> Find(long id);
-        Task<PagedAndSortedResultDto<Category>> Pagination(PagedAndSortedLookUpDto request);
+        Task<PagedAndSortedResultDto<Category>> Pagination(PageRequestDto request);
         Task<Category> Create(Category entity);
         Task<bool> Delete(long id);
         Task<bool> Update(long id, Category entity);
