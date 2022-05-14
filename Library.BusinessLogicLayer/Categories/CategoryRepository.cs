@@ -56,21 +56,22 @@ namespace Library.BusinessLogicLayer.Categories
         {
             var t = Task<Category>.Run(() =>
             {
-                return _context.Categories.GetList(Count,
-                    new DbQueryParameter
-                    {
-                        Name = "Name",
-                        CompareOperator = CompareOperator.Like,
-                        Value = "%Loại%",
-                        LogicOperator = LogicOperator.OR
-                    },
-                    new DbQueryParameter
-                    {
-                        Name = "Name",
-                        CompareOperator = CompareOperator.Same,
-                        Value = "string",
-                        LogicOperator = LogicOperator.OR
-                    });
+                return _context.Categories.GetList(Count
+                    //, new DbQueryParameter
+                    //{
+                    //    Name = "Name",
+                    //    CompareOperator = CompareOperator.Like,
+                    //    Value = "%Loại%",
+                    //    LogicOperator = LogicOperator.OR
+                    //},
+                    //new DbQueryParameter
+                    //{
+                    //    Name = "Name",
+                    //    CompareOperator = CompareOperator.Same,
+                    //    Value = "string",
+                    //    LogicOperator = LogicOperator.OR
+                    //}
+                    );
             });
             await t;
             return t.Result;
