@@ -65,7 +65,7 @@ namespace Library.Common
                 foreach (var item in properties)
                 {
                     var propertyType = item.PropertyType;
-                    columnDefine += $"{item.Name} {propertyType.GetSQLTypeName()} ,";
+                    columnDefine += $"[{item.Name}] {propertyType.GetSQLTypeName()} ,";
                 }
                 cmd.CommandText = $"CREATE TABLE [dbo].[{TableName}] ({columnDefine})";
                 cmd.ExecuteNonQuery();
