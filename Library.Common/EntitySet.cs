@@ -55,7 +55,7 @@ namespace Library.Common
                 {
                     var idType = entityType.GetProperty("Id").PropertyType;
                     var itemTypeName = idType.GetSQLTypeName();
-                    columnDefine += $"id {itemTypeName} PRIMARY KEY {(itemTypeName == "INT" || itemTypeName == "BIGINT" ? "IDENTITY" : "")},";
+                    columnDefine += $"id {itemTypeName} PRIMARY KEY {(itemTypeName == "INT NOT NULL" || itemTypeName == "BIGINT NOT NULL" ? "IDENTITY" : "")},";
                 }
                 if (entityType.GetInterface(nameof(IAuditedEntity)) != null)
                 {
