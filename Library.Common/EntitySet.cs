@@ -59,8 +59,8 @@ namespace Library.Common
                 }
                 if (entityType.GetInterface(nameof(IAuditedEntity)) != null)
                 {
-                    columnDefine += $"{nameof(IAuditedEntity.Created_At)} DATETIME2 NOT NULL,";
-                    columnDefine += $"{nameof(IAuditedEntity.Updated_At)} DATETIME2 NULL,";
+                    columnDefine += $"[{nameof(IAuditedEntity.Created_At)}] DATETIME2 NOT NULL,";
+                    columnDefine += $"[{nameof(IAuditedEntity.Updated_At)}] DATETIME2 NULL,";
                 }
                 foreach (var item in properties)
                 {
@@ -99,7 +99,7 @@ namespace Library.Common
                 var value = prop.GetValue(entity);
                 if (value != null)
                 {
-                    columns += prop.Name + ", ";
+                    columns += $"[{prop.Name}], ";
                     parameterNames += $"@{prop.Name}, ";
                     parameters.Add(new SqlParameter("@" + prop.Name, value));
                 }
@@ -216,7 +216,7 @@ namespace Library.Common
                 {
                     if (value != null)
                     {
-                        sets += $"{prop.Name} = @{prop.Name},";
+                        sets += $"[{prop.Name}] = @{prop.Name},";
                         cmd.Parameters.AddWithValue("@" + prop.Name, value);
                     }
                     else
@@ -226,7 +226,7 @@ namespace Library.Common
                 }
             }
             sets = sets.Trim(',');
-            cmd.CommandText = $"UPDATE [dbo].[{TableName}] SET {sets} WHERE ID = @id";
+            cmd.CommandText = $"UPDATE [dbo].[{TableName}] SET {sets} WHERE [ID] = @id";
             cmd.Parameters.AddWithValue("@id", id);
             return cmd.ExecuteNonQuery() > 0;
         }
