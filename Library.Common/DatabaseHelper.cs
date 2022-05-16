@@ -1,4 +1,5 @@
-﻿using Library.Common.Interfaces;
+﻿using Library.Common.Dtos;
+using Library.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -50,5 +51,6 @@ namespace Library.Common
             throw new NotImplementedException();
         }
 
+        public EntitySet<User> Users { get; set; }
     }
 }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Library.Common.Dtos
 {
+    /// <summary>
+    /// Không chỉnh sửa phần này!!!
+    /// </summary>
     public class DbQueryParameter
     {
         public string Name { get; set; }
@@ -16,7 +19,7 @@ namespace Library.Common.Dtos
         {
             switch (CompareOperator)
             {
-                case CompareOperator.Same: return "=";
+                case CompareOperator.Equal: return "=";
                 case CompareOperator.NotSame: return "!=";
                 case CompareOperator.LessThan: return "<";
                 case CompareOperator.GreaterThan: return ">";
@@ -35,7 +38,7 @@ namespace Library.Common.Dtos
 
     public enum CompareOperator
     {
-        Same,
+        Equal,
         NotSame,
         GreaterThan,
         LessThan,
