@@ -14,5 +14,7 @@ namespace Library.DataAccessLayer.EntitySets
         public CategorySet(SqlConnection connection) : base(connection)
         {
         }
+
+
     }
 }
