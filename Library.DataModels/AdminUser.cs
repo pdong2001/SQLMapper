@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Library.DataModels
 {
-    [TableName("Providers")]
-    public class Provider : AuditedEntity<long>
+    [TableName("AdminUsers")]
+    public class AdminUser : AuditedEntity<long>
     {
         public string Name { get; set; }
-        public string Phone { get; set; }
-        public string Address { get; set; }
-        public bool Visible { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
+
 }

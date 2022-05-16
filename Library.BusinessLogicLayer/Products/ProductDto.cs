@@ -9,11 +9,7 @@ namespace Library.BusinessLogicLayer.Products
 {
     public class ProductDto : Product
     {
-        public Category Category { get; set; }
-        public Provider Provider { get; set; }
-        public IEnumerable<ProductDetail> Details { get; set; }
-        public new Blob Default_Image { get; set; }
-        public IEnumerable<ImageAssign> Images { get; set; }
-        public IEnumerable<ProductOption> Options { get; set; }
+        public ProductCategory ProductCategory { get; set; }
+        //public Image Image { get; set; }
     }
 }

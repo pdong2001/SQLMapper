@@ -1,4 +1,4 @@
-﻿using Library.BusinessLogicLayer.Categories;
+﻿using Library.BusinessLogicLayer.ProductCategories;
 using Library.BusinessLogicLayer.Products;
 using Library.Common.Interfaces;
 using Library.DataAccessLayer;
@@ -63,7 +63,7 @@ namespace WebAPI
             });
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductCategoryService, ProductCategoryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/admin/[controller]")]
+    [Route("api/admin/product")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class ProductController : ControllerBase
     {
         private readonly IProductService _product;
 
-        public ProductsController(IProductService product)
+        public ProductController(IProductService product)
         {
             this._product = product;
         }

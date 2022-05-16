@@ -10,14 +10,8 @@ namespace Library.DataAccessLayer
         public WebShopDbHelper(string connectionString) : base(connectionString)
         {
         }
-        public ProductSet Products { get; set; }
-        public CategorySet Categories { get; set; }
-        public EntitySet<Provider> Providers { get; set; }
-        public EntitySet<ProductDetail> ProductsDetails { get; set; }
-        public EntitySet<ProductOption> ProductOptions { get; set; }
-        public EntitySet<ProductDetailOptionValue> ProductDetailOptionValues { get; set; }
-        public EntitySet<Blob> Blobs { get; set; }
-        public EntitySet<ImageAssign> ImageAssigns { get; set; }
-        public EntitySet<Customer> Customers { get; set; }
+
+        public EntitySet<ProductCategory> ProductCategory { get; set; }
+        public EntitySet<Product> Product { get; set; }
     }
 }

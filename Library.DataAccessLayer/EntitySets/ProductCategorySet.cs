@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Library.DataAccessLayer.EntitySets
 {
-    public class CategorySet : EntitySet<Category>
+    public class ProductCategorySet : EntitySet<ProductCategory>
     {
-        public CategorySet(SqlConnection connection) : base(connection)
+        public ProductCategorySet(SqlConnection connection) : base(connection)
         {
         }
     }
