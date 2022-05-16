@@ -105,7 +105,7 @@ namespace Library.BusinessLogicLayer.Categories
                 var result = data.Select(cate =>
                 {
                     var cateDto = mapper.Map<Category, CategoryDto>(cate);
-                    cateDto.Products = _context.Products.GetList(null, new DbQueryParameter { Name = nameof(Product.Category_Id), CompareOperator = CompareOperator.Same, Value = cateDto.Id });
+                    cateDto.Products = _context.Products.GetList(null, new DbQueryParameter { Name = nameof(Product.Category_Id), CompareOperator = CompareOperator.Equal, Value = cateDto.Id });
                     return cateDto;
                 }).ToList();
                 return result;
