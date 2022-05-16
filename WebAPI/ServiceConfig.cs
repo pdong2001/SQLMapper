@@ -1,4 +1,5 @@
 ﻿using Library.BusinessLogicLayer.Categories;
+using Library.BusinessLogicLayer.Invoices;
 using Library.BusinessLogicLayer.Products;
 using Library.Common;
 using Library.Common.Interfaces;
@@ -73,6 +74,7 @@ namespace WebAPI
             });
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IInvoiceService, InvoiceService>();
         }
     }
     public class LowerCaseNamingPolicy : JsonNamingPolicy

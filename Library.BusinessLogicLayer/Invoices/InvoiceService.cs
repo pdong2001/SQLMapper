@@ -14,9 +14,30 @@ namespace Library.BusinessLogicLayer.Invoices
     public class InvoiceService : BasicService<long, Invoice, InvoiceDto, PageRequestDto>, IInvoiceService
     {
         private readonly WebShopDbHelper _shopDbHelper;
-        public InvoiceService(WebShopDbHelper shopDbHelper, IMapper mapper) : base(shopDbHelper.Invoices, mapper)
-        {  
-            this._shopDbHelper = shopDbHelper;
+        public InvoiceService(WebShopDbHelper webShopDbHelper, IMapper mapper)
+            : base(webShopDbHelper.Invoices, mapper)
+        {
+            this._shopDbHelper = webShopDbHelper;
         }
+
+        public IList<InvoiceDto> GetWithDetail(int? Count)
+        {
+            var data = _shopDbHelper.Invoices.GetList(Count);
+
+            var invoiceDtos = data.Select(i =>
+            {
+                var obj = this.mapper.Map<Invoice, InvoiceDto>(i);
+                obj.Details = _shopDbHelper.InvoiceDetails
+                    .GetList(null, new DbQueryParameter
+                    {
+                        Name = nameof(InvoiceDetail.Invoice_Id),
+                        Value = obj.Id,
+                        CompareOperator = CompareOperator.Equal
+                    });
+                return obj;
+            }).ToList();
+            return invoiceDtos;
+        }
+
     }
 }
