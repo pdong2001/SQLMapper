@@ -2,6 +2,7 @@
 using Library.Common.Dtos;
 using Library.DataAccessLayer;
 using Library.DataModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,13 +11,14 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/admin/product")]
+    [Route("api/admin/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    [Authorize]
+    public class ProductsController : ControllerBase
     {
         private readonly IProductService _product;
 
-        public ProductController(IProductService product)
+        public ProductsController(IProductService product)
         {
             this._product = product;
         }
