@@ -1,4 +1,4 @@
-﻿using Library.BusinessLogicLayer.Categories;
+﻿using Library.BusinessLogicLayer.ProductCategories;
 using Library.BusinessLogicLayer.Products;
 using Library.Common;
 using Library.Common.Interfaces;
@@ -72,7 +72,7 @@ namespace WebAPI
                 return new WebShopDbHelper(Configuration.GetConnectionString("Default"));
             });
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductCategoryService, ProductCategoryService>();
         }
     }
     public class LowerCaseNamingPolicy : JsonNamingPolicy
