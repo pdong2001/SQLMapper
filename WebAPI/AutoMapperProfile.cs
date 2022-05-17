@@ -12,6 +12,7 @@ namespace WebAPI
         {
             CreateMap<ProductCategory, ProductCategoryDto>();
             CreateMap<Product, ProductDto>();
+            CreateMap<User, UserDto>();
             CreateMap<PagedAndSortedResultDto<Product>, PagedAndSortedResultDto<ProductDto>>();
         }
     }
