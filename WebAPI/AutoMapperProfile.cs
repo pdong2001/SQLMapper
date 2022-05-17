@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using Library.BusinessLogicLayer.Categories;
-using Library.BusinessLogicLayer.Invoices;
+using Library.BusinessLogicLayer.ProductCategories;
 using Library.BusinessLogicLayer.Products;
 using Library.Common.Dtos;
 using Library.DataModels;
@@ -11,9 +10,9 @@ namespace WebAPI
     {
         public AutoMapperProfile()
         {
-            CreateMap<Category, CategoryDto>();
-            CreateMap<Invoice, InvoiceDto>();
+            CreateMap<ProductCategory, ProductCategoryDto>();
             CreateMap<Product, ProductDto>();
+            CreateMap<User, UserDto>();
             CreateMap<PagedAndSortedResultDto<Product>, PagedAndSortedResultDto<ProductDto>>();
         }
     }

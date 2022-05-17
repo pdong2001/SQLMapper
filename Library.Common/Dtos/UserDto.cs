@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.DataModels
+namespace Library.Common.Dtos
 {
-    public class Customer : AuditedEntity<long>
+    public class UserDto : AuditedEntity<long>
     {
         public string Name { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
+        public string Email { get; set; }
     }
 }

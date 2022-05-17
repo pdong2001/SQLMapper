@@ -1,5 +1,4 @@
-﻿using Library.BusinessLogicLayer.Categories;
-using Library.BusinessLogicLayer.Invoices;
+﻿using Library.BusinessLogicLayer.ProductCategories;
 using Library.BusinessLogicLayer.Products;
 using Library.Common;
 using Library.Common.Interfaces;
@@ -17,8 +16,10 @@ namespace WebAPI
 {
     public static class ServiceConfig
     {
+        public static DateTime ExpiresTimes => DateTime.UtcNow.AddSeconds(1);
         public static void AddServices(this IServiceCollection services, IConfiguration Configuration)
         {
+            services.AddCors();
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = new LowerCaseNamingPolicy();
@@ -60,10 +61,17 @@ namespace WebAPI
                     ValidIssuer = Configuration["JWT:Issuer"],
                     ValidAudience = Configuration["JWT:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Key),
-                    RequireExpirationTime = true
+                    RequireExpirationTime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
-            services.AddScoped<IJWTManagerRepository, JWTManagerRepository>();
+            services.AddScoped<IJWTManagerRepository, JWTManagerRepository>(services =>
+            {
+                return new JWTManagerRepository(
+                    services.GetRequiredService<IConfiguration>(),
+                    services.GetRequiredService<IDatabaseHelper>(),
+                    ExpiresTimes);
+            });
             services.AddScoped<IDatabaseHelper, WebShopDbHelper>(services =>
             {
                 return new WebShopDbHelper(Configuration.GetConnectionString("Default"));
@@ -73,8 +81,7 @@ namespace WebAPI
                 return new WebShopDbHelper(Configuration.GetConnectionString("Default"));
             });
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IInvoiceService, InvoiceService>();
+            services.AddScoped<IProductCategoryService, ProductCategoryService>();
         }
     }
     public class LowerCaseNamingPolicy : JsonNamingPolicy
