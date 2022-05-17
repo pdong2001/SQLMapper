@@ -18,6 +18,7 @@ namespace WebAPI
     {
         public static void AddServices(this IServiceCollection services, IConfiguration Configuration)
         {
+            #region App Services
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = new LowerCaseNamingPolicy();
@@ -62,6 +63,8 @@ namespace WebAPI
                     RequireExpirationTime = true
                 };
             });
+            #endregion
+            
             services.AddScoped<IJWTManagerRepository, JWTManagerRepository>();
             services.AddScoped<IDatabaseHelper, WebShopDbHelper>(services =>
             {
