@@ -9,10 +9,25 @@ namespace Library.Common.Dtos
 {
     public class PageRequestDto
     {
+        /// <summary>
+        /// Số trang
+        /// </summary>
         public int PageIndex { get; set; } = 1;
+        /// <summary>
+        /// Kích thước, số phần tử
+        /// </summary>
         public int PageSize { get; set; } = 10;
+        /// <summary>
+        /// Cột để sắp xếp
+        /// </summary>
         public string Column { get; set; } = "Id";
+        /// <summary>
+        /// Kiểu sắp xếp
+        /// </summary>
         public SortOrder SortOrder { get; set; } = SortOrder.DESC;
+        /// <summary>
+        /// Giả trị để tìm kiếm
+        /// </summary>
         public string Search { get; set; }
     }
 

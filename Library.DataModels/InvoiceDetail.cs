@@ -8,14 +8,17 @@ using System.Threading.Tasks;
 
 namespace Library.DataModels
 {
-    public class ProductDetailOptionValue : Entity<long>
+    [TableName("InvoiceDetails")]
+    public class InvoiceDetail : AuditedEntity<long>
     {
-        public string Value { get; set; }
-        
-        [ForeignKey(typeof(ProductOption))]
-        public long Option_Id { get; set; }
+        [ForeignKey(typeof(Invoice))]
+        public long Invoice_Id { get; set; }
+
+        public int Quantity { get; set; }
 
         [ForeignKey(typeof(ProductDetail))]
         public long Product_Detail_Id { get; set; }
+
+        public long Price { get; set; }
     }
 }

@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.BusinessLogicLayer.Categories
+namespace Library.BusinessLogicLayer.Invoices
 {
-    public class CategoryDto : Category
+    public class InvoiceDto : Invoice
     {
-        public IList<Product> Products { get; set; }
+        public IList<InvoiceDetail> Details { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Library.Common.Dtos
 {
-	[TableName("Users")]
+	[TableName("AdminUsers")]
 	public class User : AuditedEntity<long>
 	{
 		public string Name { get; set; }

@@ -9,6 +9,6 @@ namespace Library.Common.Interfaces
 {
     public interface IJWTManagerRepository
     {
-        Tokens Authenticate(string Name, string Password);
+        Tokens Authenticate(string email, string password);
     }
 }

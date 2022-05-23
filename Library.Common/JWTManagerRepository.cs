@@ -15,26 +15,27 @@ namespace Library.Common
 {
     public class JWTManagerRepository : IJWTManagerRepository
     {
-
+        private readonly DateTime expiresTime;
         private readonly IConfiguration iconfiguration;
         private readonly IDatabaseHelper databaseHelper;
-        public JWTManagerRepository(IConfiguration iconfiguration, IDatabaseHelper databaseHelper)
+        public JWTManagerRepository(IConfiguration iconfiguration, IDatabaseHelper databaseHelper, DateTime expiresTime)
         {
             this.iconfiguration = iconfiguration;
             this.databaseHelper = databaseHelper;
+            this.expiresTime = expiresTime;
         }
-        public Tokens Authenticate(string Name, string Password)
+        public Tokens Authenticate(string email, string password)
         {
             var user = databaseHelper.Users.GetList(1, new DbQueryParameter
             {
-                Value = Name,
-                Name = nameof(User.Name),
+                Value = email,
+                Name = nameof(User.Email),
                 CompareOperator = CompareOperator.Equal,
                 LogicOperator = LogicOperator.AND
             },
             new DbQueryParameter
             {
-                Value = Password,
+                Value = password,
                 CompareOperator = CompareOperator.Equal,
                 Name = nameof(User.Password)
             }).FirstOrDefault();
@@ -53,9 +54,9 @@ namespace Library.Common
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Email, user.Email),
                 }),
-                Expires = DateTime.UtcNow.AddDays(1),
+                Expires = expiresTime,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
-            };3
+            };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return new Tokens { Token = tokenHandler.WriteToken(token) };
         }
