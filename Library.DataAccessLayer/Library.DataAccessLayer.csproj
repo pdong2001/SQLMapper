@@ -9,4 +9,8 @@
     <ProjectReference Include="..\Library.DataModels\Library.DataModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EntitySets\" />
+  </ItemGroup>
+
 </Project>
