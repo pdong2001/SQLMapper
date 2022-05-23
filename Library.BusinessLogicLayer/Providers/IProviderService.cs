@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.BusinessLogicLayer.Products
+namespace Library.BusinessLogicLayer.Providers
 {
-    public interface IProductService : IBasicService<long, Product, ProductDto, ProductLookUpDto>
+    public interface IProviderService : IBasicService<long, Provider, ProviderDto, PageRequestDto>
     {
     }
 }

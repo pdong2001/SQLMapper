@@ -1,5 +1,9 @@
-﻿using Library.BusinessLogicLayer.ProductCategories;
+﻿using Library.BusinessLogicLayer.Blobs;
+using Library.BusinessLogicLayer.Categories;
+using Library.BusinessLogicLayer.Invoices;
+using Library.BusinessLogicLayer.ProductDetails;
 using Library.BusinessLogicLayer.Products;
+using Library.BusinessLogicLayer.Providers;
 using Library.Common;
 using Library.Common.Interfaces;
 using Library.DataAccessLayer;
@@ -73,8 +77,12 @@ namespace WebAPI
             {
                 return new WebShopDbHelper(Configuration.GetConnectionString("Default"));
             });
+            services.AddScoped<IInvoiceService, InvoiceService>();
+            services.AddScoped<IProductDetailService, ProductDetailService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IProductCategoryService, ProductCategoryService>();
+            services.AddSingleton<IBlobService, BlobService>();
+            services.AddScoped<IProviderService, ProviderService>();
         }
     }
     public class LowerCaseNamingPolicy : JsonNamingPolicy

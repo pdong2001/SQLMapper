@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Library.BusinessLogicLayer.ProductDetails;
+using Library.BusinessLogicLayer.Products;
 using Library.Common.Dtos;
 using Library.Common.Interfaces;
 using Library.DataAccessLayer;
@@ -11,33 +13,38 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.Invoices
 {
-    public class InvoiceService : BasicService<long, Invoice, InvoiceDto, PageRequestDto>, IInvoiceService
+    public class InvoiceService : BasicService<long, Invoice, InvoiceDto, InvoiceLookUpDto>, IInvoiceService
     {
         private readonly WebShopDbHelper _shopDbHelper;
-        public InvoiceService(WebShopDbHelper webShopDbHelper, IMapper mapper)
+        private readonly IProductDetailService _productDetailService;
+        public InvoiceService(WebShopDbHelper webShopDbHelper, IMapper mapper, IProductDetailService productDetailService)
             : base(webShopDbHelper.Invoices, mapper)
         {
             this._shopDbHelper = webShopDbHelper;
+            _productDetailService = productDetailService;
         }
 
-        public IList<InvoiceDto> GetWithDetail(int? Count)
+        public override PagedAndSortedResultDto<InvoiceDto> Pagination(InvoiceLookUpDto request)
         {
-            var data = _shopDbHelper.Invoices.GetList(Count);
-
-            var invoiceDtos = data.Select(i =>
+            var data = base.Pagination(request);
+            data.Items.Select(i =>
             {
-                var obj = this.mapper.Map<Invoice, InvoiceDto>(i);
-                obj.Details = _shopDbHelper.InvoiceDetails
-                    .GetList(null, new DbQueryParameter
-                    {
-                        Name = nameof(InvoiceDetail.Invoice_Id),
-                        Value = obj.Id,
-                        CompareOperator = CompareOperator.Equal
-                    });
-                return obj;
-            }).ToList();
-            return invoiceDtos;
+                i.Details = _shopDbHelper.InvoiceDetails.GetList(null, new DbQueryParameterGroup(LogicOperator.AND, new DbQueryParameter
+                {
+                    Value = i.Id,
+                    Name = nameof(InvoiceDetail.Invoice_Id),
+                    CompareOperator = CompareOperator.Equal
+                })).Select(detail =>
+                {
+                    var dto = mapper.Map<InvoiceDetail, InvoiceDetailDto>(detail);
+                    if (dto.Product_Detail_Id.HasValue)
+                        dto.Product_Detail = _productDetailService.Find(dto.Product_Detail_Id.Value);
+                    dto.Product_Detail.Product = mapper.Map<Product, ProductDto>(_shopDbHelper.Products.Find(dto.Product_Detail.Product_Id));
+                    return dto;
+                }).ToList();
+                return i;
+            });
+            return data;
         }
-
     }
 }

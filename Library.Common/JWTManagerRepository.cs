@@ -24,27 +24,36 @@ namespace Library.Common
             this.databaseHelper = databaseHelper;
             this.expiresTime = expiresTime;
         }
-        public Tokens Authenticate(string email, string password)
+        public Tokens Authenticate(string email, string password, params DbQueryParameter[] userDatas)
         {
-            var user = databaseHelper.Users.GetList(1, new DbQueryParameter
+            var userQueryParameters = new List<DbQueryParameter>();
+
+            userQueryParameters.Add(new DbQueryParameter
             {
                 Value = email,
                 Name = nameof(User.Email),
                 CompareOperator = CompareOperator.Equal,
                 LogicOperator = LogicOperator.AND
-            },
-            new DbQueryParameter
+            });
+
+            userQueryParameters.Add(new DbQueryParameter
             {
                 Value = password,
                 CompareOperator = CompareOperator.Equal,
-                Name = nameof(User.Password)
-            }).FirstOrDefault();
+                Name = nameof(User.Password),
+                LogicOperator = LogicOperator.AND
+            });
+            userQueryParameters.AddRange(userDatas);
+            if (userQueryParameters.Any(p => p.LogicOperator == LogicOperator.OR))
+            {
+                throw new Exception("Can not use OR operator to find user.");
+            }
+            var user = databaseHelper.Users.GetList(1, new DbQueryParameterGroup(LogicOperator.AND, userQueryParameters.ToArray())).FirstOrDefault();
             if (user == null)
             {
                 return null;
             }
 
-            // Else we generate JSON Web Token
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(iconfiguration["JWT:Key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -53,6 +62,8 @@ namespace Library.Common
                 {
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.PrimarySid, user.Id.ToString())
                 }),
                 Expires = expiresTime,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)

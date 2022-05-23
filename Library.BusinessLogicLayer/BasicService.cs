@@ -62,12 +62,12 @@ namespace Library.BusinessLogicLayer
             });
         }
 
-        public virtual IList<TDto> GetList(int? Count, params DbQueryParameter[] dbQuerys)
+        public virtual IList<TDto> GetList(int? Count, params DbQueryParameterGroup[] dbQuerys)
         {
             return _data.GetList(Count, dbQuerys).Select(source => mapper.Map<TEntity, TDto>(source)).ToList();
         }
 
-        public virtual async Task<IList<TDto>> GetListAsync(int? Count, params DbQueryParameter[] dbQuerys)
+        public virtual async Task<IList<TDto>> GetListAsync(int? Count, params DbQueryParameterGroup[] dbQuerys)
         {
             return await Task.Run(() =>
             {
@@ -77,7 +77,16 @@ namespace Library.BusinessLogicLayer
 
         public virtual PagedAndSortedResultDto<TDto> Pagination(LookUpDto request)
         {
-            return mapper.Map<PagedAndSortedResultDto<TEntity>, PagedAndSortedResultDto<TDto>>(_data.Pagination(request));
+            var data = _data.Pagination(request);
+            var result = new PagedAndSortedResultDto<TDto>()
+            {
+                TotalPages = data.TotalPages,
+                TotalRecords = data.TotalRecords,
+                CurrentPage = data.CurrentPage,
+                Items = data.Items.Select(i => mapper.Map<TEntity, TDto>(i)).ToList(),
+                PerPage = data.PerPage,
+            };
+            return result;
         }
 
         public virtual Task<PagedAndSortedResultDto<TDto>> PaginationAsync(LookUpDto request)

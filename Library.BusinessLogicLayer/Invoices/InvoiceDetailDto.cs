@@ -1,4 +1,4 @@
-﻿using Library.Common.Dtos;
+﻿using Library.BusinessLogicLayer.ProductDetails;
 using Library.DataModels;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.Invoices
 {
-    public interface IInvoiceService : IBasicService<long, Invoice, InvoiceDto, InvoiceLookUpDto>
+    public class InvoiceDetailDto : InvoiceDetail
     {
+        public ProductDetailDto Product_Detail { get; set; }
     }
 }
