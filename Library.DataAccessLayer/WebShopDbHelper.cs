@@ -1,6 +1,4 @@
 ﻿using Library.Common;
-using Library.DataAccessLayer.EntitySets;
-using Library.DataModels;
 using System;
 
 namespace Library.DataAccessLayer
@@ -11,7 +9,5 @@ namespace Library.DataAccessLayer
         {
         }
 
-        public EntitySet<ProductCategory> ProductCategory { get; set; }
-        public EntitySet<Product> Product { get; set; }
     }
 }
