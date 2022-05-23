@@ -19,6 +19,7 @@ namespace WebAPI
         {
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddServices(Configuration);
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +44,10 @@ namespace WebAPI
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseStaticFiles();
+            app.UseCors(x => x
+                .AllowAnyHeader()
+                .AllowAnyOrigin()
+                .AllowAnyMethod());
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

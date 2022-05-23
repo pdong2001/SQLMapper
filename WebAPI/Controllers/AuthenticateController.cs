@@ -63,12 +63,12 @@ namespace WebAPI.Controllers
         public IActionResult GetUser()
         {
             var email = User.FindFirst(ClaimTypes.Email).Value;
-            var users = databaseHelper.Users.GetList(1, new DbQueryParameter
+            var users = databaseHelper.Users.GetList(1, new DbQueryParameterGroup(LogicOperator.AND, new DbQueryParameter
             {
                 Name = "Email",
                 Value = email,
                 CompareOperator = CompareOperator.Equal,
-            });
+            }));
             if (users.Any())
             {
                 var user = users.First();
