@@ -14,11 +14,11 @@ namespace Library.Common.Interfaces
     public interface IEntitySet<T> : IEntitySet
     {
         T Find(object id);
-        PagedAndSortedResultDto<T> Pagination(PageRequestDto request);
+        PagedAndSortedResultDto<T> Pagination(PageRequestDto request, params DbQueryParameterGroup[] queryGroups);
         T Create(T entity);
         bool Delete(object id);
         bool Update(object id, T entity);
-        IList<T> GetList(int? Count = null, params DbQueryParameter[] dbQueryParameters);
+        IList<T> GetList(int? Count = null, params DbQueryParameterGroup[] queryGroups);
         void CreateTableIfNotExists();
         void AddConstraints();
     }

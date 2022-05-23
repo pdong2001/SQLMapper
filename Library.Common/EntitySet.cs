@@ -147,7 +147,7 @@ namespace Library.Common
             return obj;
         }
 
-        public virtual PagedAndSortedResultDto<T> Pagination(PageRequestDto request)
+        public virtual PagedAndSortedResultDto<T> Pagination(PageRequestDto request, params DbQueryParameterGroup[] dbQueryParameterGroups)
         {
             var cmd = _connection.CreateCommand();
             var cmdCount = _connection.CreateCommand();
@@ -163,9 +163,41 @@ namespace Library.Common
                 cmd.Parameters.AddWithValue("@search", $"%{request.Search}%");
                 cmdCount.Parameters.AddWithValue("@search", $"%{request.Search}%");
             }
+            var whereBy = "";
+            if (dbQueryParameterGroups.Length > 0)
+            {
+                whereBy = "WHERE";
+                for (int index = 0; index < dbQueryParameterGroups.Length; index++)
+                {
+                    var group = dbQueryParameterGroups[index];
+                    whereBy += " (";
+                    var dbQueryParameters = group.dbQueryParameters;
+                    for (int i = 0; i < dbQueryParameters.Count; i++)
+                    {
+                        var parameter = dbQueryParameters[i];
+                        whereBy += $"{parameter.Name} {parameter.GetCompareOperator()} @{parameter.Name + i} ";
+                        if (i < dbQueryParameters.Count - 1)
+                        {
+                            whereBy += $"{parameter.GetLogicOperator()} ";
+                        }
+                        try
+                        {
+                            cmd.Parameters.AddWithValue("@" + parameter.Name + i, parameter.Value);
+                        }
+                        catch
+                        { }
+                    }
+                    whereBy += ") ";
+                    if (index < dbQueryParameterGroups.Length - 1)
+                    {
+                        whereBy += $"{group.LogicOperator} ";
+                    }
+
+                }
+            }
             cmd.CommandText = $"DECLARE @PageNumber AS INT DECLARE @RowsOfPage " +
                 $"AS INT SET @PageNumber={request.PageIndex} SET @RowsOfPage={request.PageSize} " +
-                $"SELECT * FROM [dbo].[{TableName}] {searchBy} ORDER BY (SELECT @column) {request.SortOrder} " +
+                $"SELECT * FROM [dbo].[{TableName}] {searchBy} {whereBy} ORDER BY (SELECT @column) {request.SortOrder} " +
                 $"OFFSET (@PageNumber-1)*@RowsOfPage ROWS FETCH NEXT @RowsOfPage ROWS ONLY";
             if (string.IsNullOrWhiteSpace(request.Column))
             {
@@ -231,7 +263,7 @@ namespace Library.Common
             return cmd.ExecuteNonQuery() > 0;
         }
 
-        public virtual IList<T> GetList(int? Count = null, params DbQueryParameter[] dbQueryParameters)
+        public virtual IList<T> GetList(int? Count = null, params DbQueryParameterGroup[] dbQueryParameterGroups)
         {
             var cmd = _connection.CreateCommand();
             var top = "";
@@ -240,21 +272,32 @@ namespace Library.Common
                 top = "TOP " + Count;
             }
             var whereBy = "";
-            if (dbQueryParameters.Length > 0) whereBy = "WHERE ";
-            for (int i = 0; i < dbQueryParameters.Length; i++)
+            if (dbQueryParameterGroups.Length > 0)
             {
-                var parameter = dbQueryParameters[i];
-                whereBy += $"{parameter.Name} {parameter.GetCompareOperator()} @{parameter.Name + i} ";
-                if (i < dbQueryParameters.Length - 1)
+                whereBy = "WHERE";
+                for (int index = 0; index < dbQueryParameterGroups.Length; index++)
                 {
-                    whereBy += $"{parameter.GetLogicOperator()} ";
+                    var group = dbQueryParameterGroups[index];
+                    whereBy += " (";
+                    var dbQueryParameters = group.dbQueryParameters;
+                    for (int i = 0; i < dbQueryParameters.Count; i++)
+                    {
+                        var parameter = dbQueryParameters[i];
+                        whereBy += $"{parameter.Name} {parameter.GetCompareOperator()} @{parameter.Name + i} ";
+                        if (i < dbQueryParameters.Count - 1)
+                        {
+                            whereBy += $"{parameter.GetLogicOperator()} ";
+                        }
+
+                        cmd.Parameters.AddWithValue("@" + parameter.Name + i, parameter.Value);
+                    }
+                    whereBy += ") ";
+                    if (index < dbQueryParameterGroups.Length - 1)
+                    {
+                        whereBy += $"{group.LogicOperator} ";
+                    }
+
                 }
-                try
-                {
-                    cmd.Parameters.AddWithValue("@" + parameter.Name + i, parameter.Value);
-                }
-                catch
-                { }
             }
             cmd.CommandText = $"SELECT {top} * FROM [dbo].[{TableName}] " + whereBy;
             var reader = cmd.ExecuteReader();

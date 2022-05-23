@@ -14,13 +14,13 @@ namespace Library.BusinessLogicLayer
         Task<Dto> CreateAsync(Entity entity);
         Task<bool> DeleteAsync(TKey id);
         Task<bool> UpdateAsync(TKey id, Entity entity);
-        Task<IList<Dto>> GetListAsync(int? Count, params DbQueryParameter[] dbQuerys);
+        Task<IList<Dto>> GetListAsync(int? Count, params DbQueryParameterGroup[] dbQuerys);
 
         Dto Find(TKey id);
         PagedAndSortedResultDto<Dto> Pagination(LookUpDto request);
         Dto Create(Entity entity);
         bool Delete(TKey id);
         bool Update(TKey id, Entity entity);
-        IList<Dto> GetList(int? Count, params DbQueryParameter[] dbQuerys);
+        IList<Dto> GetList(int? Count, params DbQueryParameterGroup[] dbQuerys);
     }
 }

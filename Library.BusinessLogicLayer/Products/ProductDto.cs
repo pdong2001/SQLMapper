@@ -1,15 +1,13 @@
-﻿using Library.DataModels;
-using System;
+﻿using Library.BusinessLogicLayer.Categories;
+using Library.BusinessLogicLayer.ProductDetails;
+using Library.DataModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.Products
 {
     public class ProductDto : Product
     {
-        public ProductCategory ProductCategory { get; set; }
-        //public Image Image { get; set; }
+        public IEnumerable<ProductDetailDto> Details { get; set; }
+        public CategoryDto Category { get; set; }
     }
 }

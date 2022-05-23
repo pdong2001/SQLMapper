@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Library.BusinessLogicLayer.Categories;
+using Library.BusinessLogicLayer.ProductDetails;
 using Library.Common.Dtos;
+using Library.Common.Interfaces;
 using Library.DataAccessLayer;
 using Library.DataModels;
 using System;
@@ -10,34 +13,25 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.Products
 {
-    public class ProductService : BasicService<long, Product, ProductDto, PageRequestDto>, IProductService
+    public class ProductService : BasicService<long, Product, ProductDto, ProductLookUpDto>, IProductService
     {
-        private readonly WebShopDbHelper _context;
-        public ProductService(WebShopDbHelper context, IMapper mapper) : base(context.Product, mapper)
+        private readonly WebShopDbHelper _dbHelper;
+        public ProductService(IMapper mapper, WebShopDbHelper webShopDbHelper) : base(webShopDbHelper.Products, mapper)
         {
-            this._context = context;
+            this._dbHelper = webShopDbHelper;
         }
-
-        public async Task<IList<ProductDto>> GetWithProductCategory(int? count)
+        public override PagedAndSortedResultDto<ProductDto> Pagination(ProductLookUpDto request)
         {
-            var task = new Task<IList<ProductDto>>(() =>
+            var data = base.Pagination(request);
+            data.Items.Select(prod =>
             {
-                var data = _context.Product.GetList(count);
-                var result = data.Select(pro =>
+                if (request.With_Category && prod.Category_Id.HasValue)
                 {
-                    var proDto = mapper.Map<Product, ProductDto>(pro);
-                    proDto.ProductCategory = _context.ProductCategory.Find(pro.Product_Category_Id);
-                    //if (withImage)
-                    //{
-                    //    proDto.Image = _context.Image.Find(pro.Image_Id);
-                    //}
-                    return proDto;
-                }).ToList();
-                return result;
+                    prod.Category = mapper.Map<Category, CategoryDto>(_dbHelper.Categories.Find(prod.Category_Id.Value));
+                }
+                return prod;
             });
-            task.Start();
-            await task;
-            return task.Result;
+            return data;
         }
     }
 }

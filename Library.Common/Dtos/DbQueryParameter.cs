@@ -11,9 +11,16 @@ namespace Library.Common.Dtos
     /// </summary>
     public class DbQueryParameter
     {
+        public DbQueryParameter() { }
+        public DbQueryParameter(string name, string value, CompareOperator compareOperator = CompareOperator.Like, LogicOperator logicOperator = LogicOperator.AND) {
+            this.Name = name;
+            this.Value = value;
+            this.CompareOperator = compareOperator;
+            this.LogicOperator = logicOperator;
+        }
         public string Name { get; set; }
         public object Value { get; set; }
-        public CompareOperator CompareOperator { get; set; }
+        public CompareOperator CompareOperator { get; set; } = CompareOperator.Like;
         public LogicOperator LogicOperator { get; set; }
         public string GetCompareOperator()
         {

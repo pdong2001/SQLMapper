@@ -9,6 +9,6 @@ namespace Library.BusinessLogicLayer.Invoices
 {
     public class InvoiceDto : Invoice
     {
-        public IList<InvoiceDetail> Details { get; set; }
+        public IList<InvoiceDetailDto> Details { get; set; }
     }
 }

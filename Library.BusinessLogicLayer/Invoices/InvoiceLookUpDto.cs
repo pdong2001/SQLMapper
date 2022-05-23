@@ -1,5 +1,4 @@
 ﻿using Library.Common.Dtos;
-using Library.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.Invoices
 {
-    public interface IInvoiceService : IBasicService<long, Invoice, InvoiceDto, InvoiceLookUpDto>
+    public class InvoiceLookUpDto : PageRequestDto
     {
+        public bool With_Detail { get; set; } = false;
+        public bool With_Product { get; set; } = false;
     }
 }
