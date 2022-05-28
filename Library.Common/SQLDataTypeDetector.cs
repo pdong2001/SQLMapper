@@ -20,6 +20,15 @@ namespace Library.Common
             {
                 result = " NOT NULL";
             }
+            if (type.Equals(typeof(string)))
+            {
+                result = " NULL";
+            }
+            if (type.Equals(typeof(byte[])))
+            {
+                result = "VARBINARY(MAX)" + result;
+                return result;
+            }
             switch (type.Name)
             {
                 case nameof(String): result = "NVARCHAR(MAX)" + result; break ;

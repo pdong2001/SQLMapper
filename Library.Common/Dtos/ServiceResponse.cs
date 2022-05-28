@@ -27,5 +27,11 @@ namespace Library.Common.Dtos
             Code = 400;
             Message = message;
         }
+        public void SetPaginationData(IPagedAndSortedResultDto metaData)
+        {
+            this.Meta.Add("Total", metaData.TotalRecords);
+            this.Meta.Add("PerPage", metaData.PerPage);
+            this.Meta.Add("CurrentPage", metaData.CurrentPage);
+        }
     }
 }

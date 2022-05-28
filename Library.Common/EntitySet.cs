@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Library.Common
 {
@@ -195,15 +196,15 @@ namespace Library.Common
 
                 }
             }
-            cmd.CommandText = $"DECLARE @PageNumber AS INT DECLARE @RowsOfPage " +
-                $"AS INT SET @PageNumber={request.PageIndex} SET @RowsOfPage={request.PageSize} " +
-                $"SELECT * FROM [dbo].[{TableName}] {searchBy} {whereBy} ORDER BY (SELECT @column) {request.SortOrder} " +
-                $"OFFSET (@PageNumber-1)*@RowsOfPage ROWS FETCH NEXT @RowsOfPage ROWS ONLY";
+            var properties = entityType.GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly | System.Reflection.BindingFlags.Public);
             if (string.IsNullOrWhiteSpace(request.Column))
             {
-                request.Column = "id";
+                request.Column = "Id";
             }
-            cmd.Parameters.AddWithValue("@column", request.Column);
+            cmd.CommandText = $"SELECT * FROM [dbo].[{TableName}] {searchBy} {whereBy} ORDER BY {request.Column} {request.SortOrder} " +
+                $"OFFSET (@PageNumber-1)*@RowsOfPage ROWS FETCH NEXT @RowsOfPage ROWS ONLY";
+            cmd.Parameters.AddWithValue("@RowsOfPage", request.PageSize);
+            cmd.Parameters.AddWithValue("@PageNumber", request.PageIndex);
             cmdCount.CommandText = $"SELECT COUNT(*) FROM [dbo].[{TableName}] {searchBy}";
             var count = (int)cmdCount.ExecuteScalar();
             var reader = cmd.ExecuteReader();
