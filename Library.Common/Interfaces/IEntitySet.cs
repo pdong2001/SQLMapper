@@ -21,5 +21,6 @@ namespace Library.Common.Interfaces
         IList<T> GetList(int? Count = null, params DbQueryParameterGroup[] queryGroups);
         void CreateTableIfNotExists();
         void AddConstraints();
+        string GetTableName();
     }
 }

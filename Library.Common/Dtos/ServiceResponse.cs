@@ -29,9 +29,9 @@ namespace Library.Common.Dtos
         }
         public void SetPaginationData(IPagedAndSortedResultDto metaData)
         {
-            this.Meta.Add("Total", metaData.TotalRecords);
-            this.Meta.Add("PerPage", metaData.PerPage);
-            this.Meta.Add("CurrentPage", metaData.CurrentPage);
+            this.Meta.Add("total", metaData.TotalRecords);
+            this.Meta.Add("perPage", metaData.PerPage);
+            this.Meta.Add("currentPage", metaData.CurrentPage);
         }
     }
 }

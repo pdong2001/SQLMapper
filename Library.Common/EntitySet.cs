@@ -76,6 +76,8 @@ namespace Library.Common
 
         protected readonly string TableName;
 
+        public string GetTableName() => TableName;
+
         public virtual T Create(T entity)
         {
             var cmd = _connection.CreateCommand();

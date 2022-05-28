@@ -21,6 +21,7 @@ namespace Library.Common
             }
         }
 
+        public SqlConnection Connection => _connection;
         public void AddTableConstraints()
         {
             var sets = GetType().GetProperties().Where(t => t.PropertyType.GetInterface(nameof(IEntitySet)) != null);
