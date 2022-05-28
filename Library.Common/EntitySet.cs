@@ -201,19 +201,19 @@ namespace Library.Common
             {
                 request.Column = "Id";
             }
-            cmd.CommandText = $"SELECT * FROM [dbo].[{TableName}] {searchBy} {whereBy} ORDER BY {request.Column} {request.SortOrder} " +
+            cmd.CommandText = $"SELECT * FROM [dbo].[{TableName}] {searchBy} {whereBy} ORDER BY {request.Column} {request.Sort} " +
                 $"OFFSET (@PageNumber-1)*@RowsOfPage ROWS FETCH NEXT @RowsOfPage ROWS ONLY";
-            cmd.Parameters.AddWithValue("@RowsOfPage", request.PageSize);
-            cmd.Parameters.AddWithValue("@PageNumber", request.PageIndex);
+            cmd.Parameters.AddWithValue("@RowsOfPage", request.Limit);
+            cmd.Parameters.AddWithValue("@PageNumber", request.Page);
             cmdCount.CommandText = $"SELECT COUNT(*) FROM [dbo].[{TableName}] {searchBy}";
             var count = (int)cmdCount.ExecuteScalar();
             var reader = cmd.ExecuteReader();
             PagedAndSortedResultDto<T> result = new()
             {
-                CurrentPage = request.PageIndex,
-                PerPage = request.PageSize,
+                CurrentPage = request.Page,
+                PerPage = request.Limit,
                 TotalRecords = count,
-                TotalPages = count / request.PageSize + (count % request.PageSize == 0 ? 0 : 1),
+                TotalPages = count / request.Limit + (count % request.Limit == 0 ? 0 : 1),
                 Items = new List<T>()
             };
             while (reader.Read())

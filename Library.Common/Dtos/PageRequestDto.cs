@@ -12,11 +12,11 @@ namespace Library.Common.Dtos
         /// <summary>
         /// Số trang
         /// </summary>
-        public int PageIndex { get; set; } = 1;
+        public int Page { get; set; } = 1;
         /// <summary>
         /// Kích thước, số phần tử
         /// </summary>
-        public int PageSize { get; set; } = 10;
+        public int Limit { get; set; } = 10;
         /// <summary>
         /// Cột để sắp xếp
         /// </summary>
@@ -24,25 +24,10 @@ namespace Library.Common.Dtos
         /// <summary>
         /// Kiểu sắp xếp
         /// </summary>
-        public SortOrder SortOrder { get; set; } = SortOrder.DESC;
+        public string Sort { get; set; }
         /// <summary>
         /// Giả trị để tìm kiếm
         /// </summary>
         public string Search { get; set; }
-    }
-
-    public enum SortOrder
-    {
-        /// <summary>
-        /// Tăng dần
-        /// </summary>
-        [Description("ASC")]
-        ASC,
-
-        /// <summary>
-        /// Giảm dần
-        /// </summary>
-        [Description("DESC")]
-        DESC
     }
 }
