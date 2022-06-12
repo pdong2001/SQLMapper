@@ -11,11 +11,11 @@ namespace Library.DataAccessLayer
         {
         }
 
-        public EntitySet<Category> Categories { get; set; }
-        public EntitySet<Product> Products { get; set; }
-        public EntitySet<Provider> Providers { get; set; }
-        public EntitySet<ProductDetail> ProductDetails { get; set; }
-        public EntitySet<Receipt> Receipts { get; set; }
+        public EntitySet<LoaiSanPham> DSLoaiSanPham { get; set; }
+        public EntitySet<SanPham> DSSanPham { get; set; }
+        public EntitySet<ChiTietSanPham> DSCTSanPham { get; set; }
+        public EntitySet<ChiTietDonDatHang> DSCTDonDatHang { get; set; }
+        public EntitySet<DonDatHang> DSDonDatHang { get; set; }
         public EntitySet<Blob> Blobs { get; set; }
     }
 }

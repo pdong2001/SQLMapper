@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.Products
 {
-    public class ProductDto : Product
+    public class SanPhamDto : SanPham
     {
         public Blob Image { get; set; }
-        public IList<ProductDetailDto> Details { get; set; }
-        public Category Category { get; internal set; }
+        public IList<ChiTietSanPhamDto> Details { get; set; }
+        public LoaiSanPham Category { get; internal set; }
     }
 }

@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.BusinessLogicLayer.Providers
+namespace Library.BusinessLogicLayer.Categories
 {
-    public interface IProviderService : IBasicService<long, Provider, ProviderDto, PageRequestDto>
+    public interface ILoaiSanPhamService : IBasicService<long, LoaiSanPham, LoaiSanPhamDto, PageRequestDto>
     {
     }
 }

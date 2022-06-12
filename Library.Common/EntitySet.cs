@@ -85,7 +85,7 @@ namespace Library.Common
             var pros = entityType.GetProperties();
             var parameters = new List<SqlParameter>(pros.Length);
             var cmdIdentity = _connection.CreateCommand();
-            var idType = typeof(T).GetProperty("Id").GetType();
+            var idType = typeof(T).GetProperty("Id").PropertyType;
             if (idType == typeof(long) || idType == typeof(int))
             {
                 pros = pros.Where(pro => pro.Name.ToLower() != "id").ToArray();

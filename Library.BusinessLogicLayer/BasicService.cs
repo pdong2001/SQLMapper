@@ -93,7 +93,7 @@ namespace Library.BusinessLogicLayer
         {
             return Task.Run(() =>
             {
-                return mapper.Map<PagedAndSortedResultDto<TEntity>, PagedAndSortedResultDto<TDto>>(_data.Pagination(request));
+                return Pagination(request);
             });
         }
 

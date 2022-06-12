@@ -12,9 +12,9 @@ namespace WebAPI.Controllers
     [ApiController]
     public class FilesController : ControllerBase
     {
-        private readonly IBlobService _blobService;
+        private readonly IFileService _blobService;
 
-        public FilesController(IBlobService blobService)
+        public FilesController(IFileService blobService)
         {
             _blobService = blobService;
         }

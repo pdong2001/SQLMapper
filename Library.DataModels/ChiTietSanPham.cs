@@ -8,22 +8,18 @@ using System.Threading.Tasks;
 
 namespace Library.DataModels
 {
-    [TableName("ProductDetails")]
-    public class ProductDetail : AuditedEntity<long>
+    [TableName("DSChiTietSanPham")]
+    public class ChiTietSanPham : AuditedEntity<long>
     {
         public string Unit { get; set; }
 
-        [ForeignKey(typeof(Product))]
+        [ForeignKey(typeof(SanPham))]
         public long Product_Id { get; set; }
-
-        //public string Color { get; set; }
         public string Size { get; set; }
-        public int Total_Quantity { get; set; }
+        public string Color { get; set; }
         public int Remaining_Quantity { get; set; }
-        public int? In_Price { get;set; }
         public int Out_Price { get; set; }
         public bool Visible { get; set; } = true;
-
         [ForeignKey(typeof(Blob))]
         public long? Default_Image { get; set; }
     }

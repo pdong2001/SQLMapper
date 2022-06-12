@@ -1,10 +1,10 @@
 ﻿
 using Library.BusinessLogicLayer.Blobs;
 using Library.BusinessLogicLayer.Categories;
+using Library.BusinessLogicLayer.InvoiceDetails;
+using Library.BusinessLogicLayer.Invoices;
 using Library.BusinessLogicLayer.ProductDetails;
 using Library.BusinessLogicLayer.Products;
-using Library.BusinessLogicLayer.Providers;
-using Library.BusinessLogicLayer.Receipts;
 using Library.Common;
 using Library.Common.Interfaces;
 using Library.DataAccessLayer;
@@ -17,7 +17,7 @@ namespace WebAPI
 {
     public static class ServiceConfig
     {
-        public static DateTime ExpiresTimes => DateTime.UtcNow.AddSeconds(1);
+        public static DateTime ExpiresTimes => DateTime.UtcNow.AddDays(1);
         public static void AddServices(this IServiceCollection services, IConfiguration Configuration)
         {
             services.AddScoped<IJWTManagerRepository, JWTManagerRepository>(s => 
@@ -30,12 +30,12 @@ namespace WebAPI
             {
                 return new WebShopDbHelper(Configuration.GetConnectionString("Default"));
             });
-            services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IProductDetailService, ProductDetailService>();
-            services.AddScoped<IBlobService, BlobService>();
-            services.AddScoped<IProviderService, ProviderService>();
-            services.AddScoped<IReceiptService, ReceiptService>();
+            services.AddScoped<ILoaiSanPhamService, LoaiSanPhamService>();
+            services.AddScoped<ISanPhamService, SanPhamService>();
+            services.AddScoped<IChiTietSanPhamService, ChiTietSanPhamService>();
+            services.AddScoped<IDonDatHangService, DonDatHangService>();
+            services.AddScoped<ICTDonDatHangService, CTDonDatHangService>();
+            services.AddScoped<IFileService, FileService>();
         }
     }
     public class LowerCaseNamingPolicy : JsonNamingPolicy

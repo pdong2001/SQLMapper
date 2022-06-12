@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.Products
 {
-    public interface IProductService : IBasicService<long, Product, ProductDto, PageRequestDto>
+    public interface ISanPhamService : IBasicService<long, SanPham, SanPhamDto, TimKiemSanPhamDto>
     {
     }
 }

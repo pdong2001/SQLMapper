@@ -8,13 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.BusinessLogicLayer.Receipts
+namespace Library.BusinessLogicLayer.Categories
 {
-    public class ReceiptService : BasicService<long, Receipt, ReceiptDto, PageRequestDto>, IReceiptService
+    public class LoaiSanPhamService : BasicService<long, LoaiSanPham, LoaiSanPhamDto, PageRequestDto>, ILoaiSanPhamService
     {
         private readonly WebShopDbHelper _dbHelper;
 
-        public ReceiptService(WebShopDbHelper dbHelper, IMapper mapper) : base(dbHelper.Receipts, mapper)
+        public LoaiSanPhamService(WebShopDbHelper dbHelper, IMapper mapper) : base(dbHelper.DSLoaiSanPham, mapper)
         {
             _dbHelper = dbHelper;
         }

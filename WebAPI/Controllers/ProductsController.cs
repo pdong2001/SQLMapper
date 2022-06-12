@@ -9,10 +9,10 @@ namespace WebAPI.Controllers
 {
     [Route("api/admin/[controller]")]
     [ApiController]
-    public class ProductsController : BaseAPIController<long, Product, ProductDto, PageRequestDto>
+    public class ProductsController : BaseAPIController<long, SanPham, SanPhamDto, TimKiemSanPhamDto>
     {
 
-        public ProductsController(IProductService products) : base(products)
+        public ProductsController(ISanPhamService products) : base(products)
         {
         }
     }

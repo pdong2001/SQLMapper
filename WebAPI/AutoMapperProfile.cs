@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Library.BusinessLogicLayer.Blobs;
 using Library.BusinessLogicLayer.Categories;
+using Library.BusinessLogicLayer.InvoiceDetails;
+using Library.BusinessLogicLayer.Invoices;
 using Library.BusinessLogicLayer.ProductDetails;
 using Library.BusinessLogicLayer.Products;
-using Library.BusinessLogicLayer.Providers;
-using Library.BusinessLogicLayer.Receipts;
 using Library.Common.Dtos;
 using Library.DataModels;
 
@@ -15,12 +15,12 @@ namespace WebAPI
         public AutoMapperProfile()
         {
             CreateMap<User, UserDto>();
-            CreateMap<Category, CategoryDto>();
-            CreateMap<Product,ProductDto>();
-            CreateMap<ProductDetail, ProductDetailDto>();
-            CreateMap<Provider, ProviderDto>();
+            CreateMap<LoaiSanPham, LoaiSanPhamDto>();
+            CreateMap<SanPham,SanPhamDto>();
+            CreateMap<ChiTietSanPham, ChiTietSanPhamDto>();
             CreateMap<Blob, BlobDto>();
-            CreateMap<Receipt, ReceiptDto>();
+            CreateMap<ChiTietDonDatHang, ChiTietDonDatHangDto>();
+            CreateMap<DonDatHang, DonDatHangDto>();
         }
     }
 }

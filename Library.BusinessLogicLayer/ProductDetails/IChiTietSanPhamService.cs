@@ -1,4 +1,4 @@
-﻿using Library.BusinessLogicLayer.Products;
+﻿using Library.Common.Dtos;
 using Library.DataModels;
 using System;
 using System.Collections.Generic;
@@ -8,10 +8,7 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.ProductDetails
 {
-    public class ProductDetailDto : ProductDetail
+    public interface IChiTietSanPhamService : IBasicService<long, ChiTietSanPham, ChiTietSanPhamDto, TimKiemCTSanPhamDto>
     {
-        public Product Product { get; set; }
-        public Blob Image { get; set; }
-
     }
 }

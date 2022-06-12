@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.Blobs
 {
-    public interface IBlobService : IBasicService<long, Blob, BlobDto, PageRequestDto>
+    public interface IFileService : IBasicService<long, Blob, BlobDto, PageRequestDto>
     {
         public BlobDto FindPath(string name);
     }

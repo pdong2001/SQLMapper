@@ -36,7 +36,7 @@ namespace WebAPI.Controllers
                 return Unauthorized();
             }
 
-            return Ok(new { data = token, code = 200, message = "Login Successfully" });
+            return Ok(new { data = token, status = true, code = 200, message = "Login Successfully", meta = new {token = token.Token } });
         }
 
         [HttpPost]
@@ -62,17 +62,13 @@ namespace WebAPI.Controllers
         [Authorize]
         public IActionResult GetUser()
         {
-            var email = User.FindFirst(ClaimTypes.Email).Value;
-            var users = databaseHelper.Users.GetList(1, new DbQueryParameterGroup(LogicOperator.AND, new DbQueryParameter
+            var id = User.FindFirst(ClaimTypes.PrimarySid).Value;
+            var user = databaseHelper.Users.Find(id);
+            if (user != null)
             {
-                Name = "Email",
-                Value = email,
-                CompareOperator = CompareOperator.Equal,
-            }));
-            if (users.Any())
-            {
-                var user = users.First();
-                return Ok(mapper.Map<User, UserDto>(user));
+                var userDto = mapper.Map<User, UserDto>(user);
+                
+                return Ok(new { status = true, data = userDto, code = 200 });
             }
 
             return Unauthorized();

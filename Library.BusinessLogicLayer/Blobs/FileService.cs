@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.Blobs
 {
-    public class BlobService : BasicService<long, Blob, BlobDto, PageRequestDto>, IBlobService
+    public class FileService : BasicService<long, Blob, BlobDto, PageRequestDto>, IFileService
     {
         private readonly WebShopDbHelper _dbHelper;
 
-        public BlobService(WebShopDbHelper dbHelper, IMapper mapper) : base(dbHelper.Blobs, mapper)
+        public FileService(WebShopDbHelper dbHelper, IMapper mapper) : base(dbHelper.Blobs, mapper)
         {
             _dbHelper = dbHelper;
         }
