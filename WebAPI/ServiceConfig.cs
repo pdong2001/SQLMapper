@@ -30,9 +30,9 @@ namespace WebAPI
             {
                 return new WebShopDbHelper(Configuration.GetConnectionString("Default"));
             });
-            services.AddScoped<ILoaiSanPhamService, LoaiSanPhamService>();
-            services.AddScoped<ISanPhamService, SanPhamService>();
-            services.AddScoped<IChiTietSanPhamService, ChiTietSanPhamService>();
+            services.AddScoped<ILoaiDoUongService, LoaiDoUongService>();
+            services.AddScoped<IDoUongService, DoUongService>();
+            services.AddScoped<IChiTietDoUongService, ChiTietDoUongService>();
             services.AddScoped<IDonDatHangService, DonDatHangService>();
             services.AddScoped<ICTDonDatHangService, CTDonDatHangService>();
             services.AddScoped<IFileService, FileService>();

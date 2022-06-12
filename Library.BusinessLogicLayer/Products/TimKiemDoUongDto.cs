@@ -1,5 +1,4 @@
 ﻿using Library.Common.Dtos;
-using Library.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.Products
 {
-    public interface ISanPhamService : IBasicService<long, SanPham, SanPhamDto, TimKiemSanPhamDto>
+    public class TimKiemDoUongDto : PageRequestDto
     {
+        public bool With_Detail { get; set; } = false;
+        public long? category { get; set; }
+        public bool visible_only { get; set; } = false;
+
     }
 }

@@ -11,9 +11,9 @@ namespace Library.DataAccessLayer
         {
         }
 
-        public EntitySet<LoaiSanPham> DSLoaiSanPham { get; set; }
-        public EntitySet<SanPham> DSSanPham { get; set; }
-        public EntitySet<ChiTietSanPham> DSCTSanPham { get; set; }
+        public EntitySet<LoaiDoUong> DSLoaiDoUong { get; set; }
+        public EntitySet<DoUong> DSDoUong { get; set; }
+        public EntitySet<ChiTietDoUong> DSCTSanPham { get; set; }
         public EntitySet<ChiTietDonDatHang> DSCTDonDatHang { get; set; }
         public EntitySet<DonDatHang> DSDonDatHang { get; set; }
         public EntitySet<Blob> Blobs { get; set; }

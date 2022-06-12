@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.ProductDetails
 {
-    public class ChiTietSanPhamDto : ChiTietSanPham
+    public class ChiTietSanPhamDto : ChiTietDoUong
     {
-        public SanPhamDto Product { get; set; }
+        public DoUongDto Product { get; set; }
         public Blob Image { get; set; }
 
     }

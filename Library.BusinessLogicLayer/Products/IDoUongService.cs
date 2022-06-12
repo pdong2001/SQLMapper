@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.BusinessLogicLayer.ProductDetails
+namespace Library.BusinessLogicLayer.Products
 {
-    public interface IChiTietSanPhamService : IBasicService<long, ChiTietSanPham, ChiTietSanPhamDto, TimKiemCTSanPhamDto>
+    public interface IDoUongService : IBasicService<long, DoUong, DoUongDto, TimKiemDoUongDto>
     {
     }
 }

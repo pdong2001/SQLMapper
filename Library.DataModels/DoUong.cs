@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Library.DataModels
 {
     [TableName("DSSanPham")]
-    public class SanPham : AuditedEntity<long>
+    public class DoUong : AuditedEntity<long>
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -20,7 +20,7 @@ namespace Library.DataModels
         [ForeignKey(typeof(Blob))]
         public long? Default_Image { get; set; }
 
-        [ForeignKey(typeof(LoaiSanPham))]
+        [ForeignKey(typeof(LoaiDoUong))]
         public long? Category_Id { get; set; }
     }
 }

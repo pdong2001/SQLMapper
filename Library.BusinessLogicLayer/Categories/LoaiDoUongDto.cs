@@ -1,5 +1,4 @@
-﻿using Library.Common.Dtos;
-using Library.DataModels;
+﻿using Library.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.Categories
 {
-    public interface ILoaiSanPhamService : IBasicService<long, LoaiSanPham, LoaiSanPhamDto, PageRequestDto>
+    public class LoaiDoUongDto : LoaiDoUong
     {
     }
 }

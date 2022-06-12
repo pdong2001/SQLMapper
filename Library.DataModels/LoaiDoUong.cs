@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Library.DataModels
 {
-    [TableName("DSLoaiSanPham")] //Tên bảng sẽ được tạo trong database
-    public class LoaiSanPham : AuditedEntity<long> // Kế thừa AuditedEntity<long> sẽ có sẵn id có kiểu long, thời gian tạo, thời gian sửa.
+    [TableName("DSLoaiDoUong")] //Tên bảng sẽ được tạo trong database
+    public class LoaiDoUong : AuditedEntity<long> // Kế thừa AuditedEntity<long> sẽ có sẵn id có kiểu long, thời gian tạo, thời gian sửa.
     {
         // Các thuộc tính
 

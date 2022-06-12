@@ -15,9 +15,9 @@ namespace WebAPI
         public AutoMapperProfile()
         {
             CreateMap<User, UserDto>();
-            CreateMap<LoaiSanPham, LoaiSanPhamDto>();
-            CreateMap<SanPham,SanPhamDto>();
-            CreateMap<ChiTietSanPham, ChiTietSanPhamDto>();
+            CreateMap<LoaiDoUong, LoaiDoUongDto>();
+            CreateMap<DoUong,DoUongDto>();
+            CreateMap<ChiTietDoUong, ChiTietSanPhamDto>();
             CreateMap<Blob, BlobDto>();
             CreateMap<ChiTietDonDatHang, ChiTietDonDatHangDto>();
             CreateMap<DonDatHang, DonDatHangDto>();

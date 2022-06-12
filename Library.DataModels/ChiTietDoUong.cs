@@ -8,15 +8,14 @@ using System.Threading.Tasks;
 
 namespace Library.DataModels
 {
-    [TableName("DSChiTietSanPham")]
-    public class ChiTietSanPham : AuditedEntity<long>
+    [TableName("DSChiTietDoUong")]
+    public class ChiTietDoUong : AuditedEntity<long>
     {
         public string Unit { get; set; }
 
-        [ForeignKey(typeof(SanPham))]
+        [ForeignKey(typeof(DoUong))]
         public long Product_Id { get; set; }
         public string Size { get; set; }
-        public string Color { get; set; }
         public int Remaining_Quantity { get; set; }
         public int Out_Price { get; set; }
         public bool Visible { get; set; } = true;

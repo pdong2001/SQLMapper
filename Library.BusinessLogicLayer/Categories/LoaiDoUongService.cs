@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Library.BusinessLogicLayer.Categories
 {
-    public class LoaiSanPhamService : BasicService<long, LoaiSanPham, LoaiSanPhamDto, PageRequestDto>, ILoaiSanPhamService
+    public class LoaiDoUongService : BasicService<long, LoaiDoUong, LoaiDoUongDto, PageRequestDto>, ILoaiDoUongService
     {
         private readonly WebShopDbHelper _dbHelper;
 
-        public LoaiSanPhamService(WebShopDbHelper dbHelper, IMapper mapper) : base(dbHelper.DSLoaiSanPham, mapper)
+        public LoaiDoUongService(WebShopDbHelper dbHelper, IMapper mapper) : base(dbHelper.DSLoaiDoUong, mapper)
         {
             _dbHelper = dbHelper;
         }

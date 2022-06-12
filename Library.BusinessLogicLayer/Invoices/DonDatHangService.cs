@@ -58,7 +58,7 @@ namespace Library.BusinessLogicLayer.Invoices
                     var cmd = _dbHelper.Connection.CreateCommand();
                     var chiTietSanPhamTable = _dbHelper.DSCTSanPham.GetTableName(); // Tên bảng chi tiết sản phẩm
                     var ctDonDatHangTable = _dbHelper.DSCTDonDatHang.GetTableName(); // Tên bảng chi tiết đơn đặt hàng
-                    cmd.CommandText = $"UPDATE [{chiTietSanPhamTable}] SET {nameof(ChiTietSanPham.Remaining_Quantity)} = {nameof(ChiTietSanPham.Remaining_Quantity)} + ISNULL((SELECT SUM({nameof(ChiTietDonDatHang.Quantity)}) FROM {ctDonDatHangTable} WHERE {ctDonDatHangTable}.{nameof(ChiTietDonDatHang.Product_Detail_id)} = {chiTietSanPhamTable}.id AND {nameof(ChiTietDonDatHang.Invoice_Id)} = @id),0) WHERE Id IN (SELECT {nameof(ChiTietDonDatHang.Product_Detail_id)} FROM {ctDonDatHangTable} WHERE {nameof(ChiTietDonDatHang.Invoice_Id)} = @id)"; // Hoàn trả số lượng của các chi tiết sản phẩm có trong đơn hàng
+                    cmd.CommandText = $"UPDATE [{chiTietSanPhamTable}] SET {nameof(ChiTietDoUong.Remaining_Quantity)} = {nameof(ChiTietDoUong.Remaining_Quantity)} + ISNULL((SELECT SUM({nameof(ChiTietDonDatHang.Quantity)}) FROM {ctDonDatHangTable} WHERE {ctDonDatHangTable}.{nameof(ChiTietDonDatHang.Product_Detail_id)} = {chiTietSanPhamTable}.id AND {nameof(ChiTietDonDatHang.Invoice_Id)} = @id),0) WHERE Id IN (SELECT {nameof(ChiTietDonDatHang.Product_Detail_id)} FROM {ctDonDatHangTable} WHERE {nameof(ChiTietDonDatHang.Invoice_Id)} = @id)"; // Hoàn trả số lượng của các chi tiết sản phẩm có trong đơn hàng
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.ExecuteNonQuery();
                 }
@@ -67,7 +67,7 @@ namespace Library.BusinessLogicLayer.Invoices
                     var cmd = _dbHelper.Connection.CreateCommand();
                     var chiTietSanPhamTable = _dbHelper.DSCTSanPham.GetTableName(); // Tên bảng chi tiết sản phẩm
                     var ctDonDatHangTable = _dbHelper.DSCTDonDatHang.GetTableName(); // Tên bảng chi tiết đơn đặt hàng
-                    cmd.CommandText = $"UPDATE [{chiTietSanPhamTable}] SET {nameof(ChiTietSanPham.Remaining_Quantity)} = {nameof(ChiTietSanPham.Remaining_Quantity)} - ISNULL((SELECT SUM({nameof(ChiTietDonDatHang.Quantity)}) FROM {ctDonDatHangTable} WHERE {ctDonDatHangTable}.{nameof(ChiTietDonDatHang.Product_Detail_id)} = {chiTietSanPhamTable}.id AND {nameof(ChiTietDonDatHang.Invoice_Id)} = @id),0) WHERE Id IN (SELECT {nameof(ChiTietDonDatHang.Product_Detail_id)} FROM {ctDonDatHangTable} WHERE {nameof(ChiTietDonDatHang.Invoice_Id)} = @id)"; // Giảm số lượng của các chi tiết sản phẩm có trong đơn hàng
+                    cmd.CommandText = $"UPDATE [{chiTietSanPhamTable}] SET {nameof(ChiTietDoUong.Remaining_Quantity)} = {nameof(ChiTietDoUong.Remaining_Quantity)} - ISNULL((SELECT SUM({nameof(ChiTietDonDatHang.Quantity)}) FROM {ctDonDatHangTable} WHERE {ctDonDatHangTable}.{nameof(ChiTietDonDatHang.Product_Detail_id)} = {chiTietSanPhamTable}.id AND {nameof(ChiTietDonDatHang.Invoice_Id)} = @id),0) WHERE Id IN (SELECT {nameof(ChiTietDonDatHang.Product_Detail_id)} FROM {ctDonDatHangTable} WHERE {nameof(ChiTietDonDatHang.Invoice_Id)} = @id)"; // Giảm số lượng của các chi tiết sản phẩm có trong đơn hàng
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.ExecuteNonQuery();
                 }
@@ -83,7 +83,7 @@ namespace Library.BusinessLogicLayer.Invoices
                 var cmd = _dbHelper.Connection.CreateCommand();
                 var chiTietSanPhamTable = _dbHelper.DSCTSanPham.GetTableName(); // Tên bảng chi tiết sản phẩm
                 var ctDonDatHangTable = _dbHelper.DSCTDonDatHang.GetTableName(); // Tên bảng chi tiết đơn đặt hàng
-                cmd.CommandText = $"UPDATE [{chiTietSanPhamTable}] SET {nameof(ChiTietSanPham.Remaining_Quantity)} = {nameof(ChiTietSanPham.Remaining_Quantity)} + ISNULL((SELECT SUM({nameof(ChiTietDonDatHang.Quantity)}) FROM {ctDonDatHangTable} WHERE {ctDonDatHangTable}.{nameof(ChiTietDonDatHang.Product_Detail_id)} = {chiTietSanPhamTable}.id AND {nameof(ChiTietDonDatHang.Invoice_Id)} = @id),0) WHERE Id IN (SELECT {nameof(ChiTietDonDatHang.Product_Detail_id)} FROM {ctDonDatHangTable} WHERE {nameof(ChiTietDonDatHang.Invoice_Id)} = @id)"; // Hoàn trả số lượng của các chi tiết sản phẩm có trong đơn hàng
+                cmd.CommandText = $"UPDATE [{chiTietSanPhamTable}] SET {nameof(ChiTietDoUong.Remaining_Quantity)} = {nameof(ChiTietDoUong.Remaining_Quantity)} + ISNULL((SELECT SUM({nameof(ChiTietDonDatHang.Quantity)}) FROM {ctDonDatHangTable} WHERE {ctDonDatHangTable}.{nameof(ChiTietDonDatHang.Product_Detail_id)} = {chiTietSanPhamTable}.id AND {nameof(ChiTietDonDatHang.Invoice_Id)} = @id),0) WHERE Id IN (SELECT {nameof(ChiTietDonDatHang.Product_Detail_id)} FROM {ctDonDatHangTable} WHERE {nameof(ChiTietDonDatHang.Invoice_Id)} = @id)"; // Hoàn trả số lượng của các chi tiết sản phẩm có trong đơn hàng
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
             }
@@ -104,7 +104,7 @@ namespace Library.BusinessLogicLayer.Invoices
                     var cmd = _dbHelper.Connection.CreateCommand();
                     var chiTietSanPhamTable = _dbHelper.DSCTSanPham.GetTableName(); // Tên bảng chi tiết sản phẩm
                     var ctDonDatHangTable = _dbHelper.DSCTDonDatHang.GetTableName(); // Tên bảng chi tiết đơn đặt hàng
-                    cmd.CommandText = $"UPDATE [{chiTietSanPhamTable}] SET {nameof(ChiTietSanPham.Remaining_Quantity)} = {nameof(ChiTietSanPham.Remaining_Quantity)} - @quantity WHERE Id = @id"; // Giảm số lượng của các chi tiết sản phẩm có trong đơn hàng
+                    cmd.CommandText = $"UPDATE [{chiTietSanPhamTable}] SET {nameof(ChiTietDoUong.Remaining_Quantity)} = {nameof(ChiTietDoUong.Remaining_Quantity)} - @quantity WHERE Id = @id"; // Giảm số lượng của các chi tiết sản phẩm có trong đơn hàng
                     cmd.Parameters.AddWithValue("@id", data.Id);
                     cmd.Parameters.AddWithValue("@quantity", d.Quantity);
                     cmd.ExecuteNonQuery();
@@ -114,7 +114,7 @@ namespace Library.BusinessLogicLayer.Invoices
                 {
                     var cmd = _dbHelper.Connection.CreateCommand();
                     var chiTietSanPhamTable = _dbHelper.DSCTSanPham.GetTableName(); // Tên bảng chi tiết sản phẩm
-                    cmd.CommandText = $"UPDATE [{chiTietSanPhamTable}] SET {nameof(ChiTietSanPham.Remaining_Quantity)} = {nameof(ChiTietSanPham.Remaining_Quantity)} - @quantity WHERE Id = @id"; // Giảm số lượng của các chi tiết sản phẩm có trong đơn hàng
+                    cmd.CommandText = $"UPDATE [{chiTietSanPhamTable}] SET {nameof(ChiTietDoUong.Remaining_Quantity)} = {nameof(ChiTietDoUong.Remaining_Quantity)} - @quantity WHERE Id = @id"; // Giảm số lượng của các chi tiết sản phẩm có trong đơn hàng
                     cmd.Parameters.AddWithValue("@id", d.Product_Detail_id);
                     cmd.Parameters.AddWithValue("@quantity", d.Quantity);
                     cmd.ExecuteNonQuery();

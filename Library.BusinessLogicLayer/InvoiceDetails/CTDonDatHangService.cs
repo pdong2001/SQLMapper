@@ -16,8 +16,8 @@ namespace Library.BusinessLogicLayer.InvoiceDetails
     public class CTDonDatHangService : BasicService<long, ChiTietDonDatHang, ChiTietDonDatHangDto, TimKiemCTDonDatHangDto>, ICTDonDatHangService
     {
         private readonly WebShopDbHelper _dbHepler;
-        private readonly IChiTietSanPhamService _ctSanPham;
-        public CTDonDatHangService(WebShopDbHelper dbHepler, IMapper mapper, IChiTietSanPhamService ctSanPham) : base(dbHepler.DSCTDonDatHang, mapper)
+        private readonly IChiTietDoUongService _ctSanPham;
+        public CTDonDatHangService(WebShopDbHelper dbHepler, IMapper mapper, IChiTietDoUongService ctSanPham) : base(dbHepler.DSCTDonDatHang, mapper)
         {
             _dbHepler = dbHepler;
             _ctSanPham = ctSanPham;

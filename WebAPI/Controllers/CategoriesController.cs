@@ -9,9 +9,9 @@ namespace WebAPI.Controllers
 {
     [Route("api/admin/[controller]")]
     [ApiController]
-    public class CategoriesController : BaseAPIController<long, LoaiSanPham, LoaiSanPhamDto, PageRequestDto>
+    public class CategoriesController : BaseAPIController<long, LoaiDoUong, LoaiDoUongDto, PageRequestDto>
     {
-        public CategoriesController(ILoaiSanPhamService categories) : base(categories)
+        public CategoriesController(ILoaiDoUongService categories) : base(categories)
         {
         }
     }

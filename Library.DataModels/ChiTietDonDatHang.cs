@@ -13,7 +13,7 @@ namespace Library.DataModels
     {
         [ForeignKey(typeof(DonDatHang))]
         public long Invoice_Id { get; set; }
-        [ForeignKey(typeof(ChiTietSanPham))]
+        [ForeignKey(typeof(ChiTietDoUong))]
         public long? Product_Detail_id { get; set; }
         public int Quantity { get; set; }
         public int Price { get; set; }
