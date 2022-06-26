@@ -37,6 +37,10 @@ namespace Library.BusinessLogicLayer.Products
             {
                 i.Image = _blobService.Find(i.Default_Image.Value);
             });
+            if (data.Category_Id.HasValue)
+            {
+                data.Category = _dbHelper.DSLoaiSanPham.Find(data.Category_Id.Value);
+            }
             data.Min_Price = data.Details.Min(d => d.Out_Price);
             data.Default_Detail = data.Details.FirstOrDefault(d => d.Out_Price == data.Min_Price);
             return data;

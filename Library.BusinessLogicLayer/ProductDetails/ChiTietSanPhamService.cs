@@ -62,9 +62,11 @@ namespace Library.BusinessLogicLayer.ProductDetails
             };
             data.Items.ToList().ForEach(item =>
             {
-                if (request.With_Product)
+                if (request.With_Detail)
                 {
                     item.Product = mapper.Map<SanPham, SanPhamDto>(_dbHelper.DSSanPham.Find(item.Product_Id));
+                    if (item.Product != null && item.Product.Default_Image.HasValue)
+                        item.Product.Image = _blobService.Find(item.Product.Default_Image.Value);
                 }
                 if (item.Default_Image.HasValue)
                 {

@@ -9,6 +9,6 @@ namespace Library.BusinessLogicLayer.Categories
 {
     public class LoaiSanPhamDto : LoaiSanPham
     {
-        public Blob Image { get; set; }
+        //public Blob Image { get; set; }
     }
 }

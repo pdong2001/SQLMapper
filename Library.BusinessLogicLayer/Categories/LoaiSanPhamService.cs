@@ -22,10 +22,10 @@ namespace Library.BusinessLogicLayer.Categories
         public override PagedAndSortedResultDto<LoaiSanPhamDto> Pagination(PageRequestDto request)
         {
             var data = base.Pagination(request);
-            data.Items.Where(item => item.Blob_Id.HasValue).ToList().ForEach(item =>
-            {
-                item.Image = _dbHelper.Blobs.Find(item.Blob_Id.Value);
-            });
+            //data.Items.Where(item => item.Blob_Id.HasValue).ToList().ForEach(item =>
+            //{
+            //    item.Image = _dbHelper.Blobs.Find(item.Blob_Id.Value);
+            //});
             return data;
         }
     }

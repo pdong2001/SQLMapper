@@ -47,11 +47,5 @@ namespace Library.BusinessLogicLayer.InvoiceDetails
             });
             return result;
         }
-        public override ChiTietDonDatHangDto Create(ChiTietDonDatHang entity)
-        {
-            var prod = _dbHepler.DSCTSanPham.Find(entity.Product_Detail_id);
-            entity.Price = prod.Out_Price;
-            return base.Create(entity);
-        }
     }
 }

@@ -16,7 +16,7 @@ namespace Library.DataModels
         public string Name { get; set; }
         public bool Visible { get; set; }
         public string Note { get; set; }
-        [ForeignKey(typeof(Blob))]
-        public long? Blob_Id { get;set; }
+        //[ForeignKey(typeof(Blob))]
+        //public long? Blob_Id { get;set; }
     }
 }

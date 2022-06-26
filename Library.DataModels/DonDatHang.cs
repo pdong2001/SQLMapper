@@ -34,6 +34,7 @@ namespace Library.DataModels
         public long Paid { get; set; }
         [Required]
         public string Customer_Name { get; set; }
+        public string Phone_Number { get; set; }
         [Required]
         public string Address { get; set; }
         public int Status { get; set; }

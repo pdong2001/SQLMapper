@@ -9,7 +9,7 @@ namespace Library.BusinessLogicLayer.ProductDetails
 {
     public class TimKiemCTSanPhamDto : PageRequestDto
     {
-        public bool With_Product { get; set; } = false;
+        public bool With_Detail { get; set; } = false;
         public bool consumable_only { get; set; } = false;
         public long? product_id { get; set; }
     }
