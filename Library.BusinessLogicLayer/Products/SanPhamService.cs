@@ -33,6 +33,12 @@ namespace Library.BusinessLogicLayer.Products
                 if (data.Image != null) data.Image.Content = null;
             }
             data.Details = _productDetails.GetList(null, new DbQueryParameterGroup(new DbQueryParameter(nameof(ChiTietSanPham.Product_Id), data.Id, CompareOperator.Equal)));
+            data.Details.Where(i => i.Default_Image.HasValue).ToList().ForEach(i =>
+            {
+                i.Image = _blobService.Find(i.Default_Image.Value);
+            });
+            data.Min_Price = data.Details.Min(d => d.Out_Price);
+            data.Default_Detail = data.Details.FirstOrDefault(d => d.Out_Price == data.Min_Price);
             return data;
         }
 
@@ -58,10 +64,18 @@ namespace Library.BusinessLogicLayer.Products
             };
             data.Items.ToList().ForEach(item =>
             {
-                if (request.With_Detail)
-                {
+                var cmd = _dbHelper.Connection.CreateCommand();
+                cmd.CommandText = $"SELECT ISNULL(MIN({nameof(ChiTietSanPham.Out_Price)}),0) FROM {_dbHelper.DSCTSanPham.GetTableName()} WHERE {nameof(ChiTietSanPham.Product_Id)} = @id";
+                cmd.Parameters.AddWithValue("id", item.Id);
+                item.Min_Price = (int)cmd.ExecuteScalar();
+
                     item.Details = _productDetails.GetList(null, new DbQueryParameterGroup(new DbQueryParameter(nameof(ChiTietSanPham.Product_Id), item.Id, CompareOperator.Equal)));
-                }
+                    item.Details.Where(i => i.Default_Image.HasValue).ToList().ForEach(i =>
+                    {
+                        i.Image = _blobService.Find(i.Default_Image.Value);
+                    });
+                    item.Default_Detail = item.Details.FirstOrDefault(d => d.Out_Price == item.Min_Price);
+
                 if (item.Default_Image.HasValue)
                 {
                     item.Image = _blobService.Find(item.Default_Image.Value);

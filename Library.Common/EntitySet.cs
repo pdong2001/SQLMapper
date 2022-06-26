@@ -136,8 +136,8 @@ namespace Library.Common
             cmd.CommandText = $"SELECT * FROM [dbo].[{TableName}] WHERE id = @id";
             cmd.Parameters.AddWithValue("@id", id);
             var reader = cmd.ExecuteReader();
+            if (reader.Read()) { 
             var obj = (T)entityType.GetConstructors()[0].Invoke(null);
-            if (reader.Read())
                 foreach (var pro in entityType.GetProperties())
                 {
                     try
@@ -147,7 +147,8 @@ namespace Library.Common
                     catch { }
                 }
             reader.Close();
-            return obj;
+            return obj;}
+            return default(T);
         }
 
         public virtual PagedAndSortedResultDto<T> Pagination(PageRequestDto request, params DbQueryParameterGroup[] dbQueryParameterGroups)
@@ -169,7 +170,14 @@ namespace Library.Common
             var whereBy = "";
             if (dbQueryParameterGroups.Length > 0)
             {
-                whereBy = "WHERE";
+                if (string.IsNullOrWhiteSpace(searchBy))
+                {
+                    whereBy = "WHERE";
+                }
+                else
+                {
+                    whereBy = "AND";
+                }
                 for (int index = 0; index < dbQueryParameterGroups.Length; index++)
                 {
                     var group = dbQueryParameterGroups[index];

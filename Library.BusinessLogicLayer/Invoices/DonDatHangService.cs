@@ -23,12 +23,10 @@ namespace Library.BusinessLogicLayer.Invoices
             var data = base.Pagination(request);
             data.Items.ToList().ForEach(i =>
             {
-                if (request.With_Detail)
-                {
                     i.details = _dbHelper.DSCTDonDatHang.GetList(null, new DbQueryParameterGroup(
                         new DbQueryParameter(nameof(ChiTietDonDatHang.Invoice_Id), i.Id)
                     ));
-                }
+                i.Total = i.details.Sum(d => d.Quantity * d.Price);
             });
             return data;
         }
